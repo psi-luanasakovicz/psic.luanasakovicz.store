@@ -10,18 +10,18 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="bg-[#8A645D] text-[#F3F1F0]/90 border-t border-[#D4C6C2]/20 pt-16 pb-8 px-4 sm:px-6 lg:px-8">
+    <footer className="bg-[#88B7A5] text-[#F8FAF9]/90 border-t border-[#C8DDD4]/20 pt-16 pb-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 text-left">
         <div className="md:col-span-2 space-y-4">
           <h3 className="font-serif-brand text-2xl font-bold tracking-wide">
             Psic. Luana Sakovicz
           </h3>
-          <p className="text-xs text-[#F3F1F0]/85 max-w-sm leading-relaxed">
+          <p className="text-xs text-[#F8FAF9]/85 max-w-sm leading-relaxed">
             Psicóloga com atuação clínica sob a abordagem Cognitivo-Comportamental (TCC).
             Oferecendo atendimento humanizado, sensível e ferramentas que potencializam o
             processo de autoconhecimento.
           </p>
-          <div className="text-[11px] text-[#F3F1F0]/70 space-y-1">
+          <div className="text-[11px] text-[#F8FAF9]/70 space-y-1">
             <p>Registro: {theme.contact.crp}</p>
             <p>Atendimento presencial em Campo Largo (PR) e online para todo o Brasil.</p>
           </div>
@@ -33,22 +33,22 @@ export default function Footer() {
           </h4>
           <ul className="text-xs space-y-2.5">
             <li>
-              <Link href="/" className="hover:underline text-[#F3F1F0]/80">
+              <Link href="/" className="hover:underline text-[#F8FAF9]/80">
                 Início
               </Link>
             </li>
             <li>
-              <Link href="/materiais" className="hover:underline text-[#F3F1F0]/80">
+              <Link href="/materiais" className="hover:underline text-[#F8FAF9]/80">
                 Boutique de Materiais
               </Link>
             </li>
             <li>
-              <Link href="/biblioteca" className="hover:underline text-[#F3F1F0]/80">
+              <Link href="/biblioteca" className="hover:underline text-[#F8FAF9]/80">
                 Área do Cliente
               </Link>
             </li>
             <li>
-              <Link href="/admin" className="hover:underline text-[#F3F1F0]/80">
+              <Link href="/admin" className="hover:underline text-[#F8FAF9]/80">
                 Painel Administrativo
               </Link>
             </li>
@@ -64,7 +64,7 @@ export default function Footer() {
               <Mail className="w-4 h-4 flex-shrink-0" />
               <a
                 href={`mailto:${theme.contact.email}`}
-                className="hover:underline text-[#F3F1F0]/90"
+                className="hover:underline text-[#F8FAF9]/90"
               >
                 {theme.contact.email}
               </a>
@@ -75,7 +75,7 @@ export default function Footer() {
                 href={theme.contact.social.whatsapp}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:underline text-[#F3F1F0]/90"
+                className="hover:underline text-[#F8FAF9]/90"
               >
                 {theme.contact.phone}
               </a>
@@ -89,7 +89,7 @@ export default function Footer() {
                 href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#F3F1F0]/15 hover:bg-[#F3F1F0]/25 text-xs px-3 py-1.5 rounded-full transition-all"
+                className="bg-[#F8FAF9]/15 hover:bg-[#F8FAF9]/25 text-xs px-3 py-1.5 rounded-full transition-all"
               >
                 {label}
               </a>
@@ -98,7 +98,7 @@ export default function Footer() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-[#D4C6C2]/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-[#F3F1F0]/70">
+      <div className="max-w-7xl mx-auto mt-16 pt-8 border-t border-[#C8DDD4]/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-[10px] text-[#F8FAF9]/70">
         <p>© 2026 Luana Sakovicz. Todos os direitos reservados.</p>
         <p>Feito com carinho para o desenvolvimento profissional em saúde mental.</p>
       </div>

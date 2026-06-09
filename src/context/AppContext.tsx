@@ -345,7 +345,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         bonus: form.bonus || 'Incluso material extra reflexivo',
         rating: 5,
         sales: 0,
-        imageColor: 'from-[#8A645D]/10 to-[#ECE9E8]',
+        imageColor: 'from-[#88B7A5]/10 to-[#EEF5F2]',
         coverImageUrl,
         badge: form.badge || 'Novo Lançamento',
         details: form.details

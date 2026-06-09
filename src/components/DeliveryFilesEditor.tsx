@@ -40,14 +40,14 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
         <button
           type="button"
           onClick={addFile}
-          className="inline-flex items-center gap-1 text-[10px] font-semibold bg-[#8A645D]/10 hover:bg-[#8A645D]/20 text-[#8A645D] px-3 py-1.5 rounded-full transition-all"
+          className="inline-flex items-center gap-1 text-[10px] font-semibold bg-[#88B7A5]/10 hover:bg-[#88B7A5]/20 text-[#527A6B] px-3 py-1.5 rounded-full transition-all"
         >
           <Plus className="w-3 h-3" />
           Adicionar arquivo
         </button>
       </div>
 
-      <p className="text-[10px] text-[#8A645D]/70 leading-relaxed">
+      <p className="text-[10px] text-[#527A6B]/70 leading-relaxed">
         Envie PDF, Word, áudios ou ZIP direto para o Storage, ou informe um link externo.
       </p>
 
@@ -55,7 +55,7 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
         <button
           type="button"
           onClick={addFile}
-          className="w-full border border-dashed border-[#D4C6C2] rounded-xl py-4 text-[#8A645D]/70 hover:bg-[#F3F1F0] transition-all"
+          className="w-full border border-dashed border-[#C8DDD4] rounded-xl py-4 text-[#527A6B]/70 hover:bg-[#F8FAF9] transition-all"
         >
           + Adicionar primeiro arquivo (PDF, Word, link...)
         </button>
@@ -64,10 +64,10 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
           {files.map((file, index) => (
             <div
               key={index}
-              className="bg-[#F3F1F0] border border-[#D4C6C2]/60 rounded-xl p-3 space-y-2"
+              className="bg-[#F8FAF9] border border-[#C8DDD4]/60 rounded-xl p-3 space-y-2"
             >
               <div className="flex items-center justify-between gap-2">
-                <span className="text-[10px] font-bold text-[#8A645D]/60 uppercase">
+                <span className="text-[10px] font-bold text-[#527A6B]/60 uppercase">
                   Arquivo {index + 1}
                 </span>
                 <button
@@ -82,7 +82,7 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 <div>
-                  <label className="block text-[10px] text-[#8A645D]/60 mb-1 uppercase">
+                  <label className="block text-[10px] text-[#527A6B]/60 mb-1 uppercase">
                     Tipo
                   </label>
                   <select
@@ -93,7 +93,7 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
                         localFile: null,
                       })
                     }
-                    className="w-full bg-white border border-[#D4C6C2] rounded-lg px-3 py-2 text-[#8A645D]"
+                    className="w-full bg-white border border-[#C8DDD4] rounded-lg px-3 py-2 text-[#527A6B]"
                   >
                     {DELIVERY_FILE_TYPES.map((opt) => (
                       <option key={opt.value} value={opt.value}>
@@ -104,7 +104,7 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="block text-[10px] text-[#8A645D]/60 mb-1 uppercase">
+                  <label className="block text-[10px] text-[#527A6B]/60 mb-1 uppercase">
                     Nome / descrição
                   </label>
                   <input
@@ -112,14 +112,14 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
                     placeholder="Ex: E-book completo em PDF"
                     value={file.label}
                     onChange={(e) => updateFile(index, { label: e.target.value })}
-                    className="w-full bg-white border border-[#D4C6C2] rounded-lg px-3 py-2 text-[#8A645D]"
+                    className="w-full bg-white border border-[#C8DDD4] rounded-lg px-3 py-2 text-[#527A6B]"
                   />
                 </div>
               </div>
 
               {file.type === 'link' ? (
                 <div>
-                  <label className="block text-[10px] text-[#8A645D]/60 mb-1 uppercase">
+                  <label className="block text-[10px] text-[#527A6B]/60 mb-1 uppercase">
                     URL (obrigatório para links)
                   </label>
                   <input
@@ -127,15 +127,15 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
                     placeholder="https://drive.google.com/..."
                     value={file.url ?? ''}
                     onChange={(e) => updateFile(index, { url: e.target.value })}
-                    className="w-full bg-white border border-[#D4C6C2] rounded-lg px-3 py-2 text-[#8A645D]"
+                    className="w-full bg-white border border-[#C8DDD4] rounded-lg px-3 py-2 text-[#527A6B]"
                   />
                 </div>
               ) : (
                 <div className="space-y-2">
-                  <label className="block text-[10px] text-[#8A645D]/60 uppercase">
+                  <label className="block text-[10px] text-[#527A6B]/60 uppercase">
                     Upload do arquivo
                   </label>
-                  <label className="flex items-center gap-2 w-full bg-white border border-[#D4C6C2] rounded-lg px-3 py-2 text-[#8A645D] cursor-pointer hover:bg-[#F3F1F0]">
+                  <label className="flex items-center gap-2 w-full bg-white border border-[#C8DDD4] rounded-lg px-3 py-2 text-[#527A6B] cursor-pointer hover:bg-[#F8FAF9]">
                     <Upload className="w-3.5 h-3.5 flex-shrink-0" />
                     <span className="truncate text-[11px]">
                       {file.localFile?.name ??
@@ -154,7 +154,7 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
                     <p className="text-[10px] text-green-700">✓ Arquivo salvo no servidor</p>
                   )}
                   <div>
-                    <label className="block text-[10px] text-[#8A645D]/60 mb-1 uppercase">
+                    <label className="block text-[10px] text-[#527A6B]/60 mb-1 uppercase">
                       URL externa (opcional)
                     </label>
                     <input
@@ -162,7 +162,7 @@ export default function DeliveryFilesEditor({ files, onChange }: DeliveryFilesEd
                       placeholder="https://... (alternativa ao upload)"
                       value={file.url ?? ''}
                       onChange={(e) => updateFile(index, { url: e.target.value })}
-                      className="w-full bg-white border border-[#D4C6C2] rounded-lg px-3 py-2 text-[#8A645D]"
+                      className="w-full bg-white border border-[#C8DDD4] rounded-lg px-3 py-2 text-[#527A6B]"
                     />
                   </div>
                 </div>

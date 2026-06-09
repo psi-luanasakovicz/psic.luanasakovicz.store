@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --brand-bg: #f8faf9;
+    --brand-surface: #eef5f2;
+    --brand-surface-pink: #fbf0f3;
+    --brand-border: #c8ddd4;
+    --brand-primary: #88b7a5;
+    --brand-primary-hover: #72a190;
+    --brand-accent: #e8a8b8;
+    --brand-accent-hover: #d892a5;
+    --brand-text: #527a6b;
+  }
+}
+
 @layer utilities {
   .rounded-organic {
     border-radius: 40px 10px 40px 10px;
@@ -17,9 +31,9 @@ html {
 }
 
 body {
-  @apply bg-[#F3F1F0] text-[#8A645D] font-sans-brand antialiased;
+  @apply bg-brand-bg text-brand-text font-sans-brand antialiased;
 }
 
 ::selection {
-  @apply bg-[#8A645D]/20;
+  @apply bg-brand-accent/30;
 }

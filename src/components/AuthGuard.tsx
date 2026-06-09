@@ -26,7 +26,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
 
   if (authLoading || !ready) {
     return (
-      <div className="py-24 text-center text-sm text-[#8A645D]/70">
+      <div className="py-24 text-center text-sm text-[#527A6B]/70">
         Carregando sua sessão...
       </div>
     );

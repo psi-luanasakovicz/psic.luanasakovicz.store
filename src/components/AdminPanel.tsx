@@ -63,30 +63,30 @@ export default function AdminPanel() {
 
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
-      <div className="bg-[#ECE9E8] rounded-[2rem] border border-[#D4C6C2] p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 text-left">
+      <div className="bg-[#EEF5F2] rounded-[2rem] border border-[#C8DDD4] p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 text-left">
         <div className="space-y-1">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-amber-500" />
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#8A645D]/80">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/80">
               Portal do Administrador
             </span>
           </div>
           <h1 className="font-serif-brand text-2xl sm:text-3xl font-bold">
             Gestão da Loja de Materiais
           </h1>
-          <p className="text-xs text-[#8A645D]/80">
+          <p className="text-xs text-[#527A6B]/80">
             Cadastre novos recursos terapêuticos, acompanhe vendas e controle a biblioteca.
           </p>
         </div>
 
-        <div className="text-xs text-[#8A645D]/75 bg-[#F3F1F0] px-4 py-3 rounded-2xl border border-[#D4C6C2]/60">
+        <div className="text-xs text-[#527A6B]/75 bg-[#F8FAF9] px-4 py-3 rounded-2xl border border-[#C8DDD4]/60">
           Acessado por: <strong>{user.name || 'Psic. Luana Sakovicz'}</strong>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="bg-[#ECE9E8] p-6 rounded-2xl border border-[#D4C6C2] text-left">
-          <span className="text-xs text-[#8A645D]/60 uppercase font-semibold">Total Faturado</span>
+        <div className="bg-[#EEF5F2] p-6 rounded-2xl border border-[#C8DDD4] text-left">
+          <span className="text-xs text-[#527A6B]/60 uppercase font-semibold">Total Faturado</span>
           <p className="font-serif-brand text-2xl font-bold mt-1">
             {statsLoading ? '—' : formatBRL(stats.totalRevenue)}
           </p>
@@ -94,8 +94,8 @@ export default function AdminPanel() {
             {statsLoading ? 'Carregando...' : `Este mês: ${formatBRL(stats.monthRevenue)}`}
           </span>
         </div>
-        <div className="bg-[#ECE9E8] p-6 rounded-2xl border border-[#D4C6C2] text-left">
-          <span className="text-xs text-[#8A645D]/60 uppercase font-semibold">
+        <div className="bg-[#EEF5F2] p-6 rounded-2xl border border-[#C8DDD4] text-left">
+          <span className="text-xs text-[#527A6B]/60 uppercase font-semibold">
             Vendas Totais
           </span>
           <p className="font-serif-brand text-2xl font-bold mt-1">
@@ -103,7 +103,7 @@ export default function AdminPanel() {
               ? '—'
               : `${stats.totalSales} ${stats.totalSales === 1 ? 'venda' : 'vendas'}`}
           </p>
-          <span className="text-[10px] text-[#8A645D]/70">
+          <span className="text-[10px] text-[#527A6B]/70">
             {statsLoading
               ? 'Carregando...'
               : stats.averageRating > 0
@@ -111,8 +111,8 @@ export default function AdminPanel() {
                 : 'Sem avaliações ainda'}
           </span>
         </div>
-        <div className="bg-[#ECE9E8] p-6 rounded-2xl border border-[#D4C6C2] text-left">
-          <span className="text-xs text-[#8A645D]/60 uppercase font-semibold">
+        <div className="bg-[#EEF5F2] p-6 rounded-2xl border border-[#C8DDD4] text-left">
+          <span className="text-xs text-[#527A6B]/60 uppercase font-semibold">
             Clientes Ativos
           </span>
           <p className="font-serif-brand text-2xl font-bold mt-1">
@@ -120,18 +120,18 @@ export default function AdminPanel() {
               ? '—'
               : `${stats.activeClients} ${stats.activeClients === 1 ? 'Terapeuta' : 'Terapeutas'}`}
           </p>
-          <span className="text-[10px] text-[#8A645D]/70">Com compra aprovada</span>
+          <span className="text-[10px] text-[#527A6B]/70">Com compra aprovada</span>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start text-left">
-        <div className="lg:col-span-7 bg-[#ECE9E8] border border-[#D4C6C2] rounded-[2.5rem] p-8 space-y-6">
-          <div className="border-b border-[#D4C6C2]/40 pb-4 flex items-start justify-between gap-4">
+        <div className="lg:col-span-7 bg-[#EEF5F2] border border-[#C8DDD4] rounded-[2.5rem] p-8 space-y-6">
+          <div className="border-b border-[#C8DDD4]/40 pb-4 flex items-start justify-between gap-4">
             <div>
               <h3 className="font-serif-brand font-bold text-lg">
                 {editingId ? 'Editar Material Clínico' : 'Adicionar Novo Material Clínico'}
               </h3>
-              <p className="text-xs text-[#8A645D]/75">
+              <p className="text-xs text-[#527A6B]/75">
                 {editingId
                   ? 'Atualize dados, capa, arquivos e conteúdo do material selecionado.'
                   : 'Preencha os dados abaixo para publicar o recurso na boutique digital imediatamente.'}
@@ -141,7 +141,7 @@ export default function AdminPanel() {
               <button
                 type="button"
                 onClick={resetForm}
-                className="p-2 rounded-xl border border-[#D4C6C2] hover:bg-[#F3F1F0] text-[#8A645D]"
+                className="p-2 rounded-xl border border-[#C8DDD4] hover:bg-[#F8FAF9] text-[#527A6B]"
                 title="Cancelar edição"
               >
                 <X className="w-4 h-4" />
@@ -161,7 +161,7 @@ export default function AdminPanel() {
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
                   required
-                  className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-[#8A645D]"
+                  className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-[#527A6B]"
                 />
               </div>
               <div>
@@ -173,7 +173,7 @@ export default function AdminPanel() {
                   placeholder="Ex: 30 cartas para questionamento cognitivo."
                   value={form.subtitle}
                   onChange={(e) => setForm({ ...form, subtitle: e.target.value })}
-                  className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-[#8A645D]"
+                  className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-[#527A6B]"
                 />
               </div>
             </div>
@@ -190,7 +190,7 @@ export default function AdminPanel() {
                   value={form.price}
                   onChange={(e) => setForm({ ...form, price: e.target.value })}
                   required
-                  className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-[#8A645D]"
+                  className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-[#527A6B]"
                 />
               </div>
               <div>
@@ -205,7 +205,7 @@ export default function AdminPanel() {
                       category: e.target.value as NewProductForm['category'],
                     })
                   }
-                  className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-[#8A645D]"
+                  className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-[#527A6B]"
                 >
                   <option value="Crianças">Crianças</option>
                   <option value="Adolescentes">Adolescentes</option>
@@ -222,7 +222,7 @@ export default function AdminPanel() {
                   placeholder="Ex: Recomendado"
                   value={form.badge}
                   onChange={(e) => setForm({ ...form, badge: e.target.value })}
-                  className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-[#8A645D]"
+                  className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-[#527A6B]"
                 />
               </div>
             </div>
@@ -246,7 +246,7 @@ export default function AdminPanel() {
                   placeholder="Ex: 50 páginas"
                   value={form.pages}
                   onChange={(e) => setForm({ ...form, pages: e.target.value })}
-                  className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-[#8A645D]"
+                  className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-[#527A6B]"
                 />
               </div>
               <div>
@@ -256,7 +256,7 @@ export default function AdminPanel() {
                   placeholder="Ex: PDF Imprimível"
                   value={form.format}
                   onChange={(e) => setForm({ ...form, format: e.target.value })}
-                  className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-[#8A645D]"
+                  className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-[#527A6B]"
                 />
               </div>
               <div>
@@ -268,7 +268,7 @@ export default function AdminPanel() {
                   placeholder="Ex: Folhas extras"
                   value={form.bonus}
                   onChange={(e) => setForm({ ...form, bonus: e.target.value })}
-                  className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-[#8A645D]"
+                  className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-[#527A6B]"
                 />
               </div>
             </div>
@@ -281,7 +281,7 @@ export default function AdminPanel() {
                 placeholder="Descreva minuciosamente o valor clínico e os temas contemplados pelo recurso..."
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
-                className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl p-4 text-[#8A645D] h-24 resize-none"
+                className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl p-4 text-[#527A6B] h-24 resize-none"
               />
             </div>
 
@@ -293,7 +293,7 @@ export default function AdminPanel() {
                 placeholder={'Modelo adaptado interativo\nAbordagem com embasamento\nGuia prático para impressão'}
                 value={form.details}
                 onChange={(e) => setForm({ ...form, details: e.target.value })}
-                className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl p-4 text-[#8A645D] h-20 resize-none"
+                className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl p-4 text-[#527A6B] h-20 resize-none"
               />
             </div>
 
@@ -305,9 +305,9 @@ export default function AdminPanel() {
                 placeholder={'Título da seção\nTexto da seção...\n\nOutra seção\nMais texto...'}
                 value={form.contents}
                 onChange={(e) => setForm({ ...form, contents: e.target.value })}
-                className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl p-4 text-[#8A645D] h-24 resize-none"
+                className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl p-4 text-[#527A6B] h-24 resize-none"
               />
-              <p className="text-[10px] text-[#8A645D]/60 mt-1">
+              <p className="text-[10px] text-[#527A6B]/60 mt-1">
                 Separe seções com linha em branco. A primeira linha de cada bloco é o título.
               </p>
             </div>
@@ -319,20 +319,20 @@ export default function AdminPanel() {
 
             <button
               type="submit"
-              className="w-full bg-[#8A645D] hover:bg-[#76514B] text-white py-3.5 rounded-full font-bold shadow-md transition-all text-center"
+              className="w-full bg-[#88B7A5] hover:bg-[#72A190] text-white py-3.5 rounded-full font-bold shadow-md transition-all text-center"
             >
               {editingId ? 'Salvar Alterações' : 'Publicar Recurso Digital'}
             </button>
           </form>
         </div>
 
-        <div className="lg:col-span-5 bg-[#ECE9E8] border border-[#D4C6C2] rounded-[2.5rem] p-8 space-y-6">
-          <h3 className="font-serif-brand font-bold text-lg border-b border-[#D4C6C2]/40 pb-2">
+        <div className="lg:col-span-5 bg-[#EEF5F2] border border-[#C8DDD4] rounded-[2.5rem] p-8 space-y-6">
+          <h3 className="font-serif-brand font-bold text-lg border-b border-[#C8DDD4]/40 pb-2">
             Controle do Acervo ({products.length})
           </h3>
 
           {loading ? (
-            <p className="text-xs text-[#8A645D]/70">Carregando produtos...</p>
+            <p className="text-xs text-[#527A6B]/70">Carregando produtos...</p>
           ) : (
             <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
               {products.map((p) => (
@@ -340,16 +340,16 @@ export default function AdminPanel() {
                   key={p.id}
                   className={`p-4 rounded-2xl border flex justify-between items-center text-xs ${
                     p.isActive === false
-                      ? 'bg-[#ECE9E8]/80 border-[#D4C6C2]/40 opacity-75'
-                      : 'bg-[#F3F1F0] border-[#D4C6C2]/60'
+                      ? 'bg-[#EEF5F2]/80 border-[#C8DDD4]/40 opacity-75'
+                      : 'bg-[#F8FAF9] border-[#C8DDD4]/60'
                   }`}
                 >
                   <div className="space-y-1">
                     <p className="font-bold font-serif-brand">{p.title}</p>
-                    <div className="flex flex-wrap gap-2 text-[10px] text-[#8A645D]/70">
+                    <div className="flex flex-wrap gap-2 text-[10px] text-[#527A6B]/70">
                       <span>{p.category}</span>
                       <span>•</span>
-                      <span className="font-semibold text-[#8A645D]">R$ {p.price.toFixed(2)}</span>
+                      <span className="font-semibold text-[#527A6B]">R$ {p.price.toFixed(2)}</span>
                       {p.isActive === false && (
                         <>
                           <span>•</span>
@@ -365,8 +365,8 @@ export default function AdminPanel() {
                       onClick={() => startEdit(p)}
                       className={`p-1.5 rounded-lg ${
                         editingId === p.id
-                          ? 'bg-[#8A645D] text-white'
-                          : 'bg-[#8A645D]/10 hover:bg-[#8A645D]/20 text-[#8A645D]'
+                          ? 'bg-[#88B7A5] text-white'
+                          : 'bg-[#88B7A5]/10 hover:bg-[#88B7A5]/20 text-[#527A6B]'
                       }`}
                       title="Editar material"
                     >
@@ -375,7 +375,7 @@ export default function AdminPanel() {
                     {p.isActive !== false && (
                       <Link
                         href={`/materiais/${p.slug}`}
-                        className="p-1.5 bg-[#8A645D]/10 hover:bg-[#8A645D]/20 rounded-lg text-[#8A645D]"
+                        className="p-1.5 bg-[#88B7A5]/10 hover:bg-[#88B7A5]/20 rounded-lg text-[#527A6B]"
                         title="Visualizar"
                       >
                         <BookOpen className="w-3.5 h-3.5" />

@@ -16,7 +16,7 @@ export const initialProducts: Product[] = [
     bonus: '3 Áudios de Práticas de Mindfulness inclusos',
     rating: 5,
     sales: 142,
-    imageColor: 'from-[#D4C6C2] to-[#ECE9E8]',
+    imageColor: 'from-[#C8DDD4] to-[#EEF5F2]',
     badge: 'Mais Vendido',
     details: [
       'Modelos explicativos sobre o ciclo da ansiedade',
@@ -57,7 +57,7 @@ export const initialProducts: Product[] = [
     bonus: 'Folha de colorir "Monstro das Emoções"',
     rating: 4.9,
     sales: 98,
-    imageColor: 'from-[#ECE9E8] to-[#D4C6C2]',
+    imageColor: 'from-[#EEF5F2] to-[#C8DDD4]',
     badge: 'Lúdico e Clínico',
     details: [
       'Ilustrações exclusivas e acolhedoras para fácil identificação',
@@ -94,7 +94,7 @@ export const initialProducts: Product[] = [
     bonus: 'Planner de Rotina Semanal de Autocuidado',
     rating: 5,
     sales: 76,
-    imageColor: 'from-[#8A645D]/20 to-[#ECE9E8]',
+    imageColor: 'from-[#88B7A5]/20 to-[#EEF5F2]',
     badge: 'Estilo Journaling',
     details: [
       'Abordagem livre de julgamentos, conectada aos desafios atuais',
@@ -131,7 +131,7 @@ export const initialProducts: Product[] = [
     bonus: 'Guia explicativo sobre Prontuário Psicológico',
     rating: 4.8,
     sales: 210,
-    imageColor: 'from-[#8A645D]/10 to-[#D4C6C2]/40',
+    imageColor: 'from-[#88B7A5]/10 to-[#C8DDD4]/40',
     badge: 'Essencial Profissional',
     details: [
       'Totalmente editável para você inserir seu logotipo e CRP',

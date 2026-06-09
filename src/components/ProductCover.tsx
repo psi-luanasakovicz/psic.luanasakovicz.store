@@ -16,8 +16,8 @@ export default function ProductCover({
   if (product.coverImageUrl) {
     const overlayClass =
       overlay === 'strong'
-        ? 'bg-gradient-to-t from-[#8A645D]/85 via-[#8A645D]/35 to-[#8A645D]/10'
-        : 'bg-gradient-to-t from-[#8A645D]/50 via-transparent to-transparent';
+        ? 'bg-gradient-to-t from-[#88B7A5]/85 via-[#88B7A5]/35 to-[#88B7A5]/10'
+        : 'bg-gradient-to-t from-[#88B7A5]/50 via-transparent to-transparent';
 
     return (
       <div className={`relative overflow-hidden ${className}`}>

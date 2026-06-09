@@ -46,12 +46,12 @@ export default function CoverImageField({
   return (
     <div className="space-y-2">
       <label className="block font-semibold uppercase tracking-wide">Foto de capa</label>
-      <p className="text-[10px] text-[#8A645D]/70 leading-relaxed">
+      <p className="text-[10px] text-[#527A6B]/70 leading-relaxed">
         JPG, PNG ou WebP. Recomendado proporção vertical ou quadrada, até 5 MB.
       </p>
 
       {displayUrl ? (
-        <div className="relative rounded-2xl overflow-hidden border border-[#D4C6C2] bg-[#F3F1F0]">
+        <div className="relative rounded-2xl overflow-hidden border border-[#C8DDD4] bg-[#F8FAF9]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={displayUrl} alt="Prévia da capa" className="w-full h-48 object-cover" />
           <button
@@ -73,7 +73,7 @@ export default function CoverImageField({
         <button
           type="button"
           onClick={() => inputRef.current?.click()}
-          className="w-full border border-dashed border-[#D4C6C2] rounded-xl py-8 text-[#8A645D]/70 hover:bg-[#F3F1F0] transition-all flex flex-col items-center gap-2"
+          className="w-full border border-dashed border-[#C8DDD4] rounded-xl py-8 text-[#527A6B]/70 hover:bg-[#F8FAF9] transition-all flex flex-col items-center gap-2"
         >
           <ImagePlus className="w-6 h-6" />
           <span>Selecionar imagem de capa</span>
@@ -85,7 +85,7 @@ export default function CoverImageField({
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
-            className="text-[10px] font-semibold text-[#8A645D] underline"
+            className="text-[10px] font-semibold text-[#527A6B] underline"
           >
             Trocar imagem
           </button>
@@ -94,7 +94,7 @@ export default function CoverImageField({
           <button
             type="button"
             onClick={onRestoreExisting}
-            className="text-[10px] font-semibold text-[#8A645D] underline"
+            className="text-[10px] font-semibold text-[#527A6B] underline"
           >
             Restaurar capa atual
           </button>

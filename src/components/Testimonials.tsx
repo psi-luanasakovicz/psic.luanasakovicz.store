@@ -23,16 +23,16 @@ const TESTIMONIALS = [
 
 export default function Testimonials() {
   return (
-    <section className="bg-[#ECE9E8]/40 border-t border-[#D4C6C2]/30 py-20 px-4 sm:px-6 lg:px-8">
+    <section className="bg-[#EEF5F2]/40 border-t border-[#C8DDD4]/30 py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto space-y-12">
         <div className="text-center space-y-3">
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8A645D]/80">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#527A6B]/80">
             Depoimentos reais
           </span>
           <h2 className="font-serif-brand text-3xl sm:text-4xl font-bold">
             O que dizem os colegas de profissão
           </h2>
-          <p className="text-sm text-[#8A645D]/75 max-w-md mx-auto">
+          <p className="text-sm text-[#527A6B]/75 max-w-md mx-auto">
             Parcerias e conexões que se estendem através dos nossos materiais exclusivos.
           </p>
         </div>
@@ -41,7 +41,7 @@ export default function Testimonials() {
           {TESTIMONIALS.map((t) => (
             <div
               key={t.name}
-              className="bg-[#F3F1F0] p-8 rounded-3xl border border-[#D4C6C2]/50 shadow-sm flex flex-col justify-between space-y-6"
+              className="bg-[#F8FAF9] p-8 rounded-3xl border border-[#C8DDD4]/50 shadow-sm flex flex-col justify-between space-y-6"
             >
               <div className="space-y-4">
                 <div className="flex gap-1 text-amber-500">
@@ -49,13 +49,13 @@ export default function Testimonials() {
                     <Star key={i} className="w-4 h-4 fill-current" />
                   ))}
                 </div>
-                <p className="text-xs sm:text-sm text-[#8A645D]/90 italic leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#527A6B]/90 italic leading-relaxed">
                   &quot;{t.text}&quot;
                 </p>
               </div>
-              <div className="pt-4 border-t border-[#D4C6C2]/30">
-                <p className="text-xs font-bold text-[#8A645D]">{t.name}</p>
-                <p className="text-[11px] text-[#8A645D]/65">{t.role}</p>
+              <div className="pt-4 border-t border-[#C8DDD4]/30">
+                <p className="text-xs font-bold text-[#527A6B]">{t.name}</p>
+                <p className="text-[11px] text-[#527A6B]/65">{t.role}</p>
               </div>
             </div>
           ))}

@@ -14,13 +14,13 @@ export default function LoginForm() {
 
   return (
     <div className="py-16 px-4 sm:px-6 lg:px-8 max-w-md mx-auto space-y-6">
-      <div className="bg-[#ECE9E8] border border-[#D4C6C2] rounded-[2.5rem] p-8 space-y-6 shadow-sm">
+      <div className="bg-[#EEF5F2] border border-[#C8DDD4] rounded-[2.5rem] p-8 space-y-6 shadow-sm">
         <div className="text-center space-y-2">
-          <span className="w-12 h-12 rounded-full bg-[#8A645D]/10 flex items-center justify-center text-[#8A645D] mx-auto">
+          <span className="w-12 h-12 rounded-full bg-[#88B7A5]/10 flex items-center justify-center text-[#527A6B] mx-auto">
             <Lock className="w-5 h-5" />
           </span>
           <h1 className="font-serif-brand text-2xl sm:text-3xl font-bold">Acesse sua Conta</h1>
-          <p className="text-xs text-[#8A645D]/80">
+          <p className="text-xs text-[#527A6B]/80">
             Para acessar sua biblioteca exclusiva de recursos digitais.
           </p>
         </div>
@@ -51,7 +51,7 @@ export default function LoginForm() {
               type="email"
               placeholder="seu@email.com"
               required
-              className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-xs text-[#8A645D] focus:outline-none focus:border-[#8A645D]"
+              className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-xs text-[#527A6B] focus:outline-none focus:border-[#88B7A5]"
             />
           </div>
 
@@ -64,7 +64,7 @@ export default function LoginForm() {
               type="password"
               placeholder="••••••••"
               required
-              className="w-full bg-[#F3F1F0] border border-[#D4C6C2] rounded-xl px-4 py-2.5 text-xs text-[#8A645D] focus:outline-none focus:border-[#8A645D]"
+              className="w-full bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-2.5 text-xs text-[#527A6B] focus:outline-none focus:border-[#88B7A5]"
             />
           </div>
 
@@ -77,7 +77,7 @@ export default function LoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#8A645D] hover:bg-[#76514B] disabled:opacity-60 text-white py-3 rounded-full text-xs font-semibold shadow-sm transition-all"
+            className="w-full bg-[#88B7A5] hover:bg-[#72A190] disabled:opacity-60 text-white py-3 rounded-full text-xs font-semibold shadow-sm transition-all"
           >
             {loading ? 'Entrando...' : 'Confirmar Login'}
           </button>
@@ -99,20 +99,20 @@ export default function LoginForm() {
               }
               setResetLoading(false);
             }}
-            className="text-xs underline text-[#8A645D]/80 hover:text-[#8A645D] block w-full"
+            className="text-xs underline text-[#527A6B]/80 hover:text-[#527A6B] block w-full"
           >
             {resetLoading ? 'Enviando...' : 'Esqueci minha senha'}
           </button>
           <Link
             href="/cadastro"
-            className="text-xs underline text-[#8A645D]/80 hover:text-[#8A645D]"
+            className="text-xs underline text-[#527A6B]/80 hover:text-[#527A6B]"
           >
             Não tem conta? Crie uma agora.
           </Link>
         </div>
       </div>
 
-      <div className="text-center text-xs text-[#8A645D]/60">
+      <div className="text-center text-xs text-[#527A6B]/60">
         <p>Precisa de suporte com suas compras?</p>
         <p className="font-semibold underline cursor-pointer mt-1">{theme.contact.email}</p>
       </div>

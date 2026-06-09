@@ -1,12 +1,18 @@
 export const theme = {
   colors: {
-    background: '#F3F1F0',
-    primary: '#8A645D',
-    primaryHover: '#76514B',
-    surface: '#ECE9E8',
-    border: '#D4C6C2',
-    text: '#8A645D',
-    textMuted: 'rgba(138, 100, 93, 0.8)',
+    /** Verde-água da logo (nome, símbolo psi) */
+    primary: '#88B7A5',
+    primaryHover: '#72A190',
+    /** Rosa da logo (subtítulo, detalhes) */
+    accent: '#E8A8B8',
+    accentHover: '#D892A5',
+    /** Texto legível derivado do verde da marca */
+    text: '#527A6B',
+    textMuted: 'rgba(82, 122, 107, 0.8)',
+    background: '#F8FAF9',
+    surface: '#EEF5F2',
+    surfacePink: '#FBF0F3',
+    border: '#C8DDD4',
     white: '#FFFFFF',
   },
   fonts: {

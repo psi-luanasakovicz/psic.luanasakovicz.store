@@ -3,12 +3,14 @@
 import Link from 'next/link';
 import { ArrowLeft, Check, MessageCircle, ShoppingBag, Star } from 'lucide-react';
 import DeliveryFilesList from '@/components/DeliveryFilesList';
+import InteractiveAppCatalogNote from '@/components/InteractiveAppCatalogNote';
 import ProductCover from '@/components/ProductCover';
 import { useApp } from '@/context/AppContext';
 import {
   CHECKOUT_UNAVAILABLE_MESSAGE,
   isSimulatedCheckoutEnabled,
 } from '@/lib/checkout-config';
+import { getInteractiveApp } from '@/lib/interactive-apps';
 import { theme } from '@/lib/theme';
 import type { Product } from '@/types/product';
 
@@ -19,6 +21,7 @@ interface ProductDetailsProps {
 export default function ProductDetails({ product }: ProductDetailsProps) {
   const { buyProduct } = useApp();
   const simulatedCheckoutEnabled = isSimulatedCheckoutEnabled();
+  const interactiveApp = getInteractiveApp(product.slug);
   const whatsappUrl = `${theme.contact.social.whatsapp}?text=${encodeURIComponent(
     `Olá! Gostaria de adquirir o material "${product.title}".`,
   )}`;
@@ -38,15 +41,15 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           <ProductCover
             product={product}
             overlay="strong"
-            className="aspect-[4/3] sm:aspect-video rounded-[2.5rem] border-2 border-[#D4C6C2] shadow-md p-8 flex flex-col justify-between relative overflow-hidden"
+            className="aspect-[4/3] sm:aspect-video rounded-[2.5rem] border-2 border-[#C8DDD4] shadow-md p-8 flex flex-col justify-between relative overflow-hidden"
           >
             <div className="flex flex-col justify-between h-full">
               <div className="flex justify-between items-start">
                 <span
                   className={`text-xs font-bold px-3 py-1 rounded-full uppercase shadow-sm ${
                     product.coverImageUrl
-                      ? 'bg-white/90 text-[#8A645D]'
-                      : 'bg-[#F3F1F0] text-[#8A645D]'
+                      ? 'bg-white/90 text-[#527A6B]'
+                      : 'bg-[#F8FAF9] text-[#527A6B]'
                   }`}
                 >
                   {product.category}
@@ -54,8 +57,8 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center ${
                     product.coverImageUrl
-                      ? 'bg-white/80 backdrop-blur-sm text-[#8A645D]'
-                      : 'bg-white/60 backdrop-blur-sm text-[#8A645D]'
+                      ? 'bg-white/80 backdrop-blur-sm text-[#527A6B]'
+                      : 'bg-white/60 backdrop-blur-sm text-[#527A6B]'
                   }`}
                 >
                   Ψ
@@ -72,7 +75,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 </h2>
                 <p
                   className={`text-xs italic ${
-                    product.coverImageUrl ? 'text-white/90' : 'text-[#8A645D]/80'
+                    product.coverImageUrl ? 'text-white/90' : 'text-[#527A6B]/80'
                   }`}
                 >
                   {product.subtitle}
@@ -81,7 +84,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
               <div
                 className={`flex items-center justify-between text-xs font-medium ${
-                  product.coverImageUrl ? 'text-white/90' : 'text-[#8A645D]/80'
+                  product.coverImageUrl ? 'text-white/90' : 'text-[#527A6B]/80'
                 }`}
               >
                 <span className="bg-white/40 px-2.5 py-1 rounded-full backdrop-blur-sm">
@@ -94,9 +97,9 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             </div>
           </ProductCover>
 
-          <div className="bg-[#ECE9E8] rounded-2xl border border-[#D4C6C2] p-6 space-y-4">
+          <div className="bg-[#EEF5F2] rounded-2xl border border-[#C8DDD4] p-6 space-y-4">
             <h4 className="font-serif-brand font-bold text-sm">Garantias & Processo de Compra</h4>
-            <ul className="text-xs text-[#8A645D]/80 space-y-2.5">
+            <ul className="text-xs text-[#527A6B]/80 space-y-2.5">
               <li className="flex items-start gap-2">
                 <Check className="w-4 h-4 text-green-600 flex-shrink-0" />
                 <span>
@@ -124,11 +127,11 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
         <div className="lg:col-span-7 space-y-6 text-left">
           <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8A645D]/80 bg-[#ECE9E8] px-3.5 py-1.5 rounded-full inline-block">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#527A6B]/80 bg-[#EEF5F2] px-3.5 py-1.5 rounded-full inline-block">
               Ficha Técnica e Detalhes
             </span>
             <h1 className="font-serif-brand text-3xl sm:text-4xl font-bold">{product.title}</h1>
-            <p className="text-sm font-semibold italic text-[#8A645D]/80">{product.subtitle}</p>
+            <p className="text-sm font-semibold italic text-[#527A6B]/80">{product.subtitle}</p>
           </div>
 
           <div className="flex items-center gap-3 py-2">
@@ -137,19 +140,19 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 <Star key={i} className="w-4 h-4 fill-current" />
               ))}
             </div>
-            <span className="text-xs text-[#8A645D]/80">
+            <span className="text-xs text-[#527A6B]/80">
               ({product.sales} terapeutas já adquiriram)
             </span>
           </div>
 
-          <p className="text-sm text-[#8A645D]/95 leading-relaxed">{product.description}</p>
+          <p className="text-sm text-[#527A6B]/95 leading-relaxed">{product.description}</p>
 
-          <div className="space-y-3 bg-[#ECE9E8]/30 border border-[#D4C6C2]/40 rounded-2xl p-6">
+          <div className="space-y-3 bg-[#EEF5F2]/30 border border-[#C8DDD4]/40 rounded-2xl p-6">
             <h3 className="font-serif-brand font-bold text-sm">O que está incluído no arquivo:</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {product.details.map((detail) => (
-                <div key={detail} className="flex gap-2 items-start text-xs text-[#8A645D]/90">
-                  <div className="w-1.5 h-1.5 bg-[#8A645D] rounded-full mt-1.5 flex-shrink-0" />
+                <div key={detail} className="flex gap-2 items-start text-xs text-[#527A6B]/90">
+                  <div className="w-1.5 h-1.5 bg-[#88B7A5] rounded-full mt-1.5 flex-shrink-0" />
                   <span>{detail}</span>
                 </div>
               ))}
@@ -158,29 +161,31 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
           <DeliveryFilesList files={product.deliveryFiles} />
 
-          <div className="grid grid-cols-3 gap-4 border-y border-[#D4C6C2]/40 py-4 text-xs">
+          {interactiveApp && <InteractiveAppCatalogNote app={interactiveApp} />}
+
+          <div className="grid grid-cols-3 gap-4 border-y border-[#C8DDD4]/40 py-4 text-xs">
             <div>
-              <span className="text-[#8A645D]/60 block uppercase">Páginas/Cartas</span>
+              <span className="text-[#527A6B]/60 block uppercase">Páginas/Cartas</span>
               <span className="font-semibold">{product.pages}</span>
             </div>
             <div>
-              <span className="text-[#8A645D]/60 block uppercase">Formato</span>
+              <span className="text-[#527A6B]/60 block uppercase">Formato</span>
               <span className="font-semibold">{product.format}</span>
             </div>
             <div>
-              <span className="text-[#8A645D]/60 block uppercase">Bônus Exclusivo</span>
-              <span className="font-semibold text-[#8A645D]">{product.bonus}</span>
+              <span className="text-[#527A6B]/60 block uppercase">Bônus Exclusivo</span>
+              <span className="font-semibold text-[#527A6B]">{product.bonus}</span>
             </div>
           </div>
 
-          <div className="bg-[#ECE9E8] rounded-[2rem] border border-[#D4C6C2] p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="bg-[#EEF5F2] rounded-[2rem] border border-[#C8DDD4] p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
             <div>
-              <span className="text-xs text-[#8A645D]/75 uppercase">Valor de Investimento</span>
+              <span className="text-xs text-[#527A6B]/75 uppercase">Valor de Investimento</span>
               <div className="flex items-baseline gap-2 mt-1">
                 <span className="font-serif-brand text-3xl font-bold">
                   R$ {product.price.toFixed(2)}
                 </span>
-                <span className="text-xs text-[#8A645D]/60">Pagamento Único</span>
+                <span className="text-xs text-[#527A6B]/60">Pagamento Único</span>
               </div>
             </div>
 
@@ -188,21 +193,21 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               <button
                 type="button"
                 onClick={() => buyProduct(product)}
-                className="bg-[#8A645D] hover:bg-[#76514B] text-white px-8 py-4 rounded-full font-bold shadow-md transform hover:-translate-y-0.5 transition-all text-sm flex items-center justify-center gap-2"
+                className="bg-[#88B7A5] hover:bg-[#72A190] text-white px-8 py-4 rounded-full font-bold shadow-md transform hover:-translate-y-0.5 transition-all text-sm flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>Adquirir Acesso Imediato</span>
               </button>
             ) : (
               <div className="space-y-3 max-w-xs sm:max-w-sm">
-                <p className="text-sm text-[#8A645D]/90 leading-relaxed">
+                <p className="text-sm text-[#527A6B]/90 leading-relaxed">
                   {CHECKOUT_UNAVAILABLE_MESSAGE}
                 </p>
                 <a
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#8A645D] hover:bg-[#76514B] text-white px-8 py-4 rounded-full font-bold shadow-md transform hover:-translate-y-0.5 transition-all text-sm flex items-center justify-center gap-2"
+                  className="bg-[#88B7A5] hover:bg-[#72A190] text-white px-8 py-4 rounded-full font-bold shadow-md transform hover:-translate-y-0.5 transition-all text-sm flex items-center justify-center gap-2"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span>Falar no WhatsApp</span>

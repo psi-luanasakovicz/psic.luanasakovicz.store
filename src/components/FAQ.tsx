@@ -27,11 +27,11 @@ export default function FAQ() {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
       <div className="text-center space-y-3 mb-12">
-        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#8A645D]/80">
+        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#527A6B]/80">
           Suporte e Dúvidas
         </span>
         <h2 className="font-serif-brand text-3xl sm:text-4xl font-bold">Perguntas Frequentes</h2>
-        <p className="text-sm text-[#8A645D]/75">
+        <p className="text-sm text-[#527A6B]/75">
           Esclareça suas principais dúvidas sobre o uso e licenciamento dos nossos materiais
           digitais.
         </p>
@@ -41,20 +41,20 @@ export default function FAQ() {
         {FAQ_ITEMS.map((faq, idx) => (
           <div
             key={faq.q}
-            className="bg-[#ECE9E8] rounded-2xl border border-[#D4C6C2]/60 overflow-hidden transition-all duration-300"
+            className="bg-[#EEF5F2] rounded-2xl border border-[#C8DDD4]/60 overflow-hidden transition-all duration-300"
           >
             <button
               type="button"
               onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
-              className="w-full text-left p-6 flex justify-between items-center font-serif-brand font-bold text-[#8A645D] hover:opacity-90 focus:outline-none"
+              className="w-full text-left p-6 flex justify-between items-center font-serif-brand font-bold text-[#527A6B] hover:opacity-90 focus:outline-none"
             >
               <span className="pr-4">{faq.q}</span>
-              <span className="transform transition-transform duration-300 text-[#8A645D]/60 text-xl font-normal">
+              <span className="transform transition-transform duration-300 text-[#527A6B]/60 text-xl font-normal">
                 {openIndex === idx ? '−' : '+'}
               </span>
             </button>
             {openIndex === idx && (
-              <div className="px-6 pb-6 text-xs sm:text-sm text-[#8A645D]/80 leading-relaxed border-t border-[#D4C6C2]/30 pt-4">
+              <div className="px-6 pb-6 text-xs sm:text-sm text-[#527A6B]/80 leading-relaxed border-t border-[#C8DDD4]/30 pt-4">
                 {faq.a}
               </div>
             )}

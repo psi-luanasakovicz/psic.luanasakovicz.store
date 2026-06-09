@@ -1,7 +1,5 @@
-import { notFound, redirect } from 'next/navigation';
 import Library from '@/components/Library';
-import { fetchProductBySlug } from '@/lib/products-server';
-import { createClient } from '@/lib/supabase/server';
+import { requirePurchasedProduct } from '@/lib/product-access';
 
 export const dynamic = 'force-dynamic';
 
@@ -11,32 +9,6 @@ interface LibraryReaderPageProps {
 
 export default async function LibraryReaderPage({ params }: LibraryReaderPageProps) {
   const { slug } = await params;
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect('/login');
-  }
-
-  const product = await fetchProductBySlug(slug, { includeInactive: true });
-  if (!product) {
-    notFound();
-  }
-
-  const { data: purchase } = await supabase
-    .from('purchases')
-    .select('id')
-    .eq('user_id', user.id)
-    .eq('product_id', product.id)
-    .eq('status', 'approved')
-    .maybeSingle();
-
-  if (!purchase) {
-    notFound();
-  }
-
+  const { product } = await requirePurchasedProduct(slug);
   return <Library product={product} />;
 }
