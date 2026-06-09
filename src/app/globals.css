@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .rounded-organic {
+    border-radius: 40px 10px 40px 10px;
+  }
+
+  .rounded-organic-reverse {
+    border-radius: 10px 40px 10px 40px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-[#F3F1F0] text-[#8A645D] font-sans-brand antialiased;
+}
+
+::selection {
+  @apply bg-[#8A645D]/20;
+}
