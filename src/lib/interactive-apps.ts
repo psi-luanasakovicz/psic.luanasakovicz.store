@@ -2,10 +2,8 @@ export interface InteractiveApp {
   slug: string;
   title: string;
   description: string;
-  /** URL do app — acesso completo na biblioteca (compradores) */
+  /** URL do app — acesso na biblioteca (compradores) */
   appUrl: string;
-  /** URL pública para preview no catálogo */
-  demoUrl: string;
   badge: string;
 }
 
@@ -15,7 +13,6 @@ const BARALHO_APP: InteractiveApp = {
   description:
     'Tire cartas em tempo real durante a sessão. Ideal para consultório presencial ou online.',
   appUrl: 'https://baralho-terapeutico.vercel.app/',
-  demoUrl: 'https://baralho-terapeutico.vercel.app/',
   badge: 'App Interativo',
 };
 

@@ -49,6 +49,6 @@ export async function requirePurchasedInteractiveApp(slug: string) {
     notFound();
   }
 
-  const { product } = await requirePurchasedProduct(slug);
-  return { app, product };
+  const { product, userId } = await requirePurchasedProduct(slug);
+  return { app, product, userId };
 }

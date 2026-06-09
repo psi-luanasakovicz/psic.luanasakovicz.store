@@ -423,17 +423,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
         .update({
           title: form.title,
           category: form.category,
-          subtitle: form.subtitle || existing.subtitle,
+          subtitle: form.subtitle,
           price: parseFloat(form.price),
-          description: form.description || existing.description,
-          pages: form.pages || String(existing.pages),
+          description: form.description,
+          pages: form.pages,
           format: buildFormatFromForm(form, deliveryFiles),
-          bonus: form.bonus || existing.bonus,
-          badge: form.badge || null,
-          details: (form.details
-            ? form.details.split('\n').filter(Boolean)
-            : existing.details) as unknown as Json,
-          contents: parseContentsText(form.contents || '') as unknown as Json,
+          bonus: form.bonus,
+          badge: form.badge.trim() || null,
+          details: form.details.split('\n').filter(Boolean) as unknown as Json,
+          contents: parseContentsText(form.contents) as unknown as Json,
           delivery_files: deliveryFiles as unknown as Json,
           cover_image_url: coverImageUrl,
         })

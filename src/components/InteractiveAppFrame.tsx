@@ -8,9 +8,10 @@ import type { Product } from '@/types/product';
 interface InteractiveAppFrameProps {
   app: InteractiveApp;
   product: Product;
+  embedUrl: string;
 }
 
-export default function InteractiveAppFrame({ app, product }: InteractiveAppFrameProps) {
+export default function InteractiveAppFrame({ app, product, embedUrl }: InteractiveAppFrameProps) {
   return (
     <div className="min-h-[calc(100vh-5rem)] flex flex-col bg-[#F8FAF9]">
       <div className="border-b border-[#C8DDD4]/40 bg-[#F8FAF9]/95 backdrop-blur-sm px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -29,7 +30,7 @@ export default function InteractiveAppFrame({ app, product }: InteractiveAppFram
         </div>
 
         <a
-          href={app.appUrl}
+          href={embedUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center justify-center gap-1.5 border border-[#C8DDD4] hover:bg-[#EEF5F2] text-xs font-semibold px-4 py-2 rounded-full transition-all self-start sm:self-auto"
@@ -40,7 +41,7 @@ export default function InteractiveAppFrame({ app, product }: InteractiveAppFram
       </div>
 
       <iframe
-        src={app.appUrl}
+        src={embedUrl}
         title={app.title}
         className="flex-1 w-full min-h-[70vh] border-0 bg-white"
         allow="fullscreen"

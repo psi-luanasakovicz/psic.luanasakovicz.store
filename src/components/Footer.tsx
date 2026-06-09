@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import { Mail, Phone } from 'lucide-react';
+import { useApp } from '@/context/AppContext';
 import { theme } from '@/lib/theme';
 
 const socialLinks = [
@@ -9,6 +12,8 @@ const socialLinks = [
 ] as const;
 
 export default function Footer() {
+  const { user } = useApp();
+
   return (
     <footer className="bg-[#88B7A5] text-[#F8FAF9]/90 border-t border-[#C8DDD4]/20 pt-16 pb-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 text-left">
@@ -47,11 +52,13 @@ export default function Footer() {
                 Área do Cliente
               </Link>
             </li>
-            <li>
-              <Link href="/admin" className="hover:underline text-[#F8FAF9]/80">
-                Painel Administrativo
-              </Link>
-            </li>
+            {user.isLoggedIn && user.isAdmin && (
+              <li>
+                <Link href="/admin" className="hover:underline text-[#F8FAF9]/80">
+                  Painel Administrativo
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
 

@@ -26,20 +26,14 @@ export default function HeroSection({ stats }: HeroSectionProps) {
           para estruturar sessões de psicologia de forma lúdica, empática e altamente profissional.
         </p>
 
-        <div className="flex flex-wrap gap-4 pt-4">
+        <div className="pt-4">
           <Link
             href="/materiais"
-            className="bg-[#88B7A5] hover:bg-[#72A190] text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-[#88B7A5]/10 hover:shadow-[#88B7A5]/20 transform hover:-translate-y-0.5 transition-all text-sm flex items-center gap-2"
+            className="bg-[#88B7A5] hover:bg-[#72A190] text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-[#88B7A5]/10 hover:shadow-[#88B7A5]/20 transform hover:-translate-y-0.5 transition-all text-sm inline-flex items-center gap-2"
           >
             <ShoppingBag className="w-4 h-4" />
             <span>Explorar Materiais</span>
           </Link>
-          <a
-            href="#benefits"
-            className="border border-[#E8A8B8]/60 hover:bg-[#FBF0F3] px-8 py-4 rounded-full font-semibold transition-all text-sm text-[#527A6B]"
-          >
-            Conhecer Proposta
-          </a>
         </div>
 
         <div className="pt-8 border-t border-[#C8DDD4]/40 grid grid-cols-3 gap-4">

@@ -179,6 +179,10 @@ export interface Database {
       generate_license_code: { Args: Record<string, never>; Returns: string };
       increment_product_sales: { Args: { p_product_id: string }; Returns: undefined };
       get_public_stats: { Args: Record<string, never>; Returns: Json };
+      verify_interactive_app_access: {
+        Args: { p_user_id: string; p_product_slug: string };
+        Returns: boolean;
+      };
     };
     Enums: {
       user_role: UserRole;

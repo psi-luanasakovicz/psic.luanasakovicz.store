@@ -1,9 +1,8 @@
 import Link from 'next/link';
-import { ChevronRight, Heart, Printer, ShieldCheck, ShoppingBag, Star } from 'lucide-react';
+import { ChevronRight, Heart, Printer, ShieldCheck, ShoppingBag } from 'lucide-react';
 import FAQ from '@/components/FAQ';
 import HeroSection from '@/components/HeroSection';
 import HomeFeaturedProducts from '@/components/HomeFeaturedProducts';
-import InteractiveAppPromo from '@/components/InteractiveAppPromo';
 import Testimonials from '@/components/Testimonials';
 import { fetchActiveProducts } from '@/lib/products-server';
 import { emptyPublicStats, fetchPublicStats } from '@/lib/public-stats';
@@ -17,13 +16,10 @@ export default async function HomePage() {
     <div>
       <HeroSection stats={stats ?? emptyPublicStats} />
 
-      <InteractiveAppPromo />
-
       <HomeFeaturedProducts products={products} />
 
       <section id="benefits" className="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-          <div className="space-y-6">
+        <div className="max-w-2xl space-y-6">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#527A6B]/80 bg-[#FBF0F3] px-3.5 py-1.5 rounded-full">
               Diferenciais
             </span>
@@ -82,45 +78,6 @@ export default async function HomePage() {
                 </div>
               </div>
             </div>
-          </div>
-
-          <div className="bg-[#EEF5F2] border border-[#C8DDD4] rounded-[2.5rem] p-8 space-y-6 shadow-inner relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-[#88B7A5]/5 rounded-full blur-2xl" />
-
-            <div className="bg-[#F8FAF9] p-6 rounded-2xl border border-[#C8DDD4]/60 shadow-sm space-y-4">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-green-500" />
-                <span className="text-[10px] uppercase font-bold tracking-wider text-[#527A6B]/60">
-                  Feedback Recente
-                </span>
-              </div>
-              <p className="text-xs italic text-[#527A6B]/90">
-                &quot;Os cartões de emoções revolucionaram a minha clínica infantil. As crianças
-                pedem para brincar toda sessão. O design transmite tanto cuidado!&quot;
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-[#88B7A5]/25 flex items-center justify-center text-[10px] font-bold">
-                  ML
-                </div>
-                <div>
-                  <p className="text-xs font-semibold">Mariana Lins</p>
-                  <p className="text-[10px] text-[#527A6B]/60">Psicóloga Clínica • CRP 06/99882</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-[#F8FAF9] p-6 rounded-2xl border border-[#C8DDD4]/60 shadow-sm space-y-2 max-w-sm ml-auto">
-              <div className="flex gap-1 text-amber-500">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                ))}
-              </div>
-              <p className="text-xs font-bold text-[#527A6B]">
-                Material de alta fidelidade e fácil uso
-              </p>
-              <p className="text-[11px] text-[#527A6B]/80">Fácil download imediato após a compra.</p>
-            </div>
-          </div>
         </div>
       </section>
 

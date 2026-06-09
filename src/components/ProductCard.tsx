@@ -54,32 +54,20 @@ export default function ProductCard({ product, variant = 'featured' }: ProductCa
             )}
           </div>
 
-          <div className="pt-4 border-t border-[#C8DDD4]/40 flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <div>
-                <span className="text-[10px] text-[#527A6B]/50 block uppercase">Valor Comercial</span>
-                <span className="font-serif-brand text-lg font-bold">
-                  R$ {product.price.toFixed(2)}
-                </span>
-              </div>
-              <Link
-                href={`/materiais/${product.slug}`}
-                className="bg-[#88B7A5] hover:bg-[#72A190] text-[#F8FAF9] text-xs font-semibold px-4 py-2 rounded-full transition-all flex items-center gap-1"
-              >
-                <span>Detalhes</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </Link>
+          <div className="pt-4 border-t border-[#C8DDD4]/40 flex items-center justify-between">
+            <div>
+              <span className="text-[10px] text-[#527A6B]/50 block uppercase">Valor Comercial</span>
+              <span className="font-serif-brand text-lg font-bold">
+                R$ {product.price.toFixed(2)}
+              </span>
             </div>
-            {interactiveApp && (
-              <a
-                href={interactiveApp.demoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[10px] font-semibold text-[#527A6B]/80 hover:text-[#88B7A5] text-center transition-colors"
-              >
-                Experimentar demo do baralho →
-              </a>
-            )}
+            <Link
+              href={`/materiais/${product.slug}`}
+              className="bg-[#88B7A5] hover:bg-[#72A190] text-[#F8FAF9] text-xs font-semibold px-4 py-2 rounded-full transition-all flex items-center gap-1"
+            >
+              <span>Detalhes</span>
+              <ChevronRight className="w-3.5 h-3.5" />
+            </Link>
           </div>
         </div>
       </div>
@@ -127,30 +115,18 @@ export default function ProductCard({ product, variant = 'featured' }: ProductCa
           <p className="text-xs text-[#527A6B]/80 line-clamp-2">{product.subtitle}</p>
         </div>
 
-        <div className="pt-4 border-t border-[#C8DDD4]/40 space-y-2">
-          <div className="flex items-center justify-between">
-            <div>
-              <span className="text-[10px] text-[#527A6B]/60 block uppercase">Valor</span>
-              <span className="font-serif-brand text-lg font-bold">R$ {product.price.toFixed(2)}</span>
-            </div>
-            <Link
-              href={`/materiais/${product.slug}`}
-              className="bg-[#88B7A5] hover:bg-[#72A190] text-[#F8FAF9] text-xs font-semibold px-4 py-2 rounded-full transition-all flex items-center gap-1"
-            >
-              <span>Saiba Mais</span>
-              <ChevronRight className="w-3.5 h-3.5" />
-            </Link>
+        <div className="pt-4 border-t border-[#C8DDD4]/40 flex items-center justify-between">
+          <div>
+            <span className="text-[10px] text-[#527A6B]/60 block uppercase">Valor</span>
+            <span className="font-serif-brand text-lg font-bold">R$ {product.price.toFixed(2)}</span>
           </div>
-          {interactiveApp && (
-            <a
-              href={interactiveApp.demoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-[10px] font-semibold text-[#527A6B]/75 hover:text-[#88B7A5] transition-colors"
-            >
-              Demo do baralho interativo →
-            </a>
-          )}
+          <Link
+            href={`/materiais/${product.slug}`}
+            className="bg-[#88B7A5] hover:bg-[#72A190] text-[#F8FAF9] text-xs font-semibold px-4 py-2 rounded-full transition-all flex items-center gap-1"
+          >
+            <span>Saiba Mais</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </div>
     </div>

@@ -23,20 +23,11 @@ export default function InteractiveAppPromo() {
           </h2>
           <p className="text-sm text-[#527A6B]/85 leading-relaxed">{app.description}</p>
           <p className="text-xs text-[#527A6B]/70">
-            Experimente a demo gratuita ou adquira o material para usar sem limites na sua Área do
-            Cliente.
+            Adquira o material para usar o baralho digital na sua Área do Cliente.
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3 relative z-10 shrink-0">
-          <a
-            href={app.demoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="border border-[#E8A8B8]/60 hover:bg-[#FBF0F3] text-[#527A6B] px-6 py-3.5 rounded-full font-semibold transition-all text-sm text-center"
-          >
-            Experimentar demo
-          </a>
+        <div className="relative z-10 shrink-0">
           <Link
             href={`/materiais/${app.slug}`}
             className="bg-[#88B7A5] hover:bg-[#72A190] text-white px-6 py-3.5 rounded-full font-semibold transition-all text-sm text-center inline-flex items-center justify-center gap-2"

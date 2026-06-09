@@ -41,6 +41,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           <ProductCover
             product={product}
             overlay="strong"
+            expandable
             className="aspect-[4/3] sm:aspect-video rounded-[2.5rem] border-2 border-[#C8DDD4] shadow-md p-8 flex flex-col justify-between relative overflow-hidden"
           >
             <div className="flex flex-col justify-between h-full">

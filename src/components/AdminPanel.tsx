@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { BookOpen, Pencil, Power, PowerOff, Trash2, X } from 'lucide-react';
+import { BookOpen, Pencil, Plus, Power, PowerOff, Trash2, X } from 'lucide-react';
 import DeliveryFilesEditor from '@/components/DeliveryFilesEditor';
 import CoverImageField from '@/components/CoverImageField';
 import { emptyNewProduct, useApp } from '@/context/AppContext';
@@ -21,7 +21,9 @@ export default function AdminPanel() {
   const [statsLoading, setStatsLoading] = useState(true);
   const [seeding, setSeeding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
   const [form, setForm] = useState<NewProductForm>(emptyNewProduct);
+  const formRef = useRef<HTMLDivElement>(null);
 
   const loadDashboard = async () => {
     setLoading(true);
@@ -44,14 +46,30 @@ export default function AdminPanel() {
 
   const resetForm = () => {
     setEditingId(null);
+    setIsCreating(false);
     setForm(emptyNewProduct);
   };
 
+  const startCreate = () => {
+    setEditingId(null);
+    setIsCreating(true);
+    setForm(emptyNewProduct);
+    requestAnimationFrame(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
   const startEdit = (product: Product) => {
+    setIsCreating(false);
     setEditingId(product.id);
     setForm(productToForm(product));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    requestAnimationFrame(() => {
+      formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
   };
+
+  const isEditing = editingId !== null;
+  const showForm = isEditing || isCreating;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -155,7 +173,11 @@ export default function AdminPanel() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start text-left">
-        <div className="lg:col-span-7 bg-[#EEF5F2] border border-[#C8DDD4] rounded-[2.5rem] p-8 space-y-6">
+        {showForm && (
+        <div
+          ref={formRef}
+          className="lg:col-span-12 bg-[#EEF5F2] border border-[#C8DDD4] rounded-[2.5rem] p-8 space-y-6"
+        >
           <div className="border-b border-[#C8DDD4]/40 pb-4 flex items-start justify-between gap-4">
             <div>
               <h3 className="font-serif-brand font-bold text-lg">
@@ -167,14 +189,15 @@ export default function AdminPanel() {
                   : 'Preencha os dados abaixo para publicar o recurso na boutique digital imediatamente.'}
               </p>
             </div>
-            {editingId && (
+            {showForm && (
               <button
                 type="button"
                 onClick={resetForm}
-                className="p-2 rounded-xl border border-[#C8DDD4] hover:bg-[#F8FAF9] text-[#527A6B]"
-                title="Cancelar edição"
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-[#C8DDD4] hover:bg-[#F8FAF9] text-[#527A6B] text-xs font-semibold shrink-0"
+                title="Voltar ao acervo"
               >
                 <X className="w-4 h-4" />
+                Voltar ao acervo
               </button>
             )}
           </div>
@@ -355,11 +378,23 @@ export default function AdminPanel() {
             </button>
           </form>
         </div>
+        )}
 
-        <div className="lg:col-span-5 bg-[#EEF5F2] border border-[#C8DDD4] rounded-[2.5rem] p-8 space-y-6">
-          <h3 className="font-serif-brand font-bold text-lg border-b border-[#C8DDD4]/40 pb-2">
-            Controle do Acervo ({products.length})
-          </h3>
+        {!showForm && (
+        <div className="lg:col-span-12 bg-[#EEF5F2] border border-[#C8DDD4] rounded-[2.5rem] p-8 space-y-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#C8DDD4]/40 pb-4">
+            <h3 className="font-serif-brand font-bold text-lg">
+              Controle do Acervo ({products.length})
+            </h3>
+            <button
+              type="button"
+              onClick={startCreate}
+              className="inline-flex items-center justify-center gap-2 bg-[#88B7A5] hover:bg-[#72A190] text-white px-5 py-2.5 rounded-full text-xs font-bold transition-all shrink-0"
+            >
+              <Plus className="w-4 h-4" />
+              Adicionar material
+            </button>
+          </div>
 
           {loading ? (
             <p className="text-xs text-[#527A6B]/70">Carregando produtos...</p>
@@ -465,6 +500,7 @@ export default function AdminPanel() {
             </div>
           )}
         </div>
+        )}
       </div>
     </div>
   );
