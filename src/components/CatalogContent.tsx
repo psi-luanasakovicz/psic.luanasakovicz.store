@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import { Info } from 'lucide-react';
 import CatalogFilters from '@/components/CatalogFilters';
 import ProductGrid from '@/components/ProductGrid';
@@ -48,7 +49,23 @@ export default function CatalogContent({ products }: CatalogContentProps) {
         onSearchChange={setSearchQuery}
       />
 
-      {filteredProducts.length > 0 ? (
+      {products.length === 0 ? (
+        <div className="text-center py-16 bg-[#EEF5F2] rounded-2xl border border-[#C8DDD4] max-w-lg mx-auto space-y-4">
+          <Info className="w-8 h-8 text-[#527A6B]/60 mx-auto" />
+          <p className="font-serif-brand text-lg font-bold">Catálogo em configuração</p>
+          <p className="text-xs text-[#527A6B]/70">
+            Ainda não há materiais publicados. Se você é administradora, acesse o{' '}
+            <strong>Painel Admin</strong> e clique em &quot;Importar materiais&quot; para publicar o
+            catálogo inicial.
+          </p>
+          <Link
+            href="/admin"
+            className="inline-block bg-[#88B7A5] text-white px-4 py-2 rounded-full text-xs font-semibold"
+          >
+            Ir ao Painel Admin
+          </Link>
+        </div>
+      ) : filteredProducts.length > 0 ? (
         <ProductGrid products={filteredProducts} variant="catalog" columns="catalog" />
       ) : (
         <div className="text-center py-16 bg-[#EEF5F2] rounded-2xl border border-[#C8DDD4] max-w-md mx-auto space-y-4">

@@ -30,6 +30,7 @@ import {
   CHECKOUT_UNAVAILABLE_MESSAGE,
   isSimulatedCheckoutEnabled,
 } from '@/lib/checkout-config';
+import { seedInitialCatalog } from '@/lib/seed-products';
 import { simulatePurchase } from '@/lib/purchases';
 import type { Json } from '@/types/database';
 import type { NewProductForm, Product } from '@/types/product';
@@ -61,6 +62,7 @@ interface AppContextValue {
   updateProduct: (id: string, form: NewProductForm) => Promise<void>;
   setProductActive: (id: string, isActive: boolean) => Promise<void>;
   removeProduct: (id: string) => Promise<void>;
+  seedInitialCatalog: () => Promise<{ error: string | null; count: number }>;
   hasPurchased: (productId: string) => boolean;
   updateUserProfile: (data: { name: string; crp: string }) => Promise<{ error: string | null }>;
 }
@@ -507,6 +509,24 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [user.isAdmin, supabase, showToast, router],
   );
 
+  const seedInitialCatalogAction = useCallback(async () => {
+    if (!user.isAdmin) {
+      showToast('Acesso negado.');
+      return { error: 'Acesso negado.', count: 0 };
+    }
+
+    const result = await seedInitialCatalog();
+
+    if (result.error) {
+      showToast(result.error);
+    } else {
+      showToast(`${result.count} materiais publicados no catálogo com sucesso!`);
+      router.refresh();
+    }
+
+    return result;
+  }, [user.isAdmin, showToast, router]);
+
   const hasPurchased = useCallback(
     (productId: string) => purchasedProductIds.includes(productId),
     [purchasedProductIds],
@@ -553,6 +573,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       updateProduct,
       setProductActive,
       removeProduct,
+      seedInitialCatalog: seedInitialCatalogAction,
       hasPurchased,
       updateUserProfile,
     }),
@@ -575,6 +596,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       updateProduct,
       setProductActive,
       removeProduct,
+      seedInitialCatalogAction,
       hasPurchased,
       updateUserProfile,
     ],

@@ -9,14 +9,17 @@ import { emptyNewProduct, useApp } from '@/context/AppContext';
 import { emptyAdminStats, fetchAdminStats, formatBRL, type AdminStats } from '@/lib/admin-stats';
 import { productToForm } from '@/lib/product-form';
 import { fetchAllProductsAdmin } from '@/lib/products-client';
+import { INITIAL_CATALOG_COUNT } from '@/lib/seed-products';
 import type { NewProductForm, Product } from '@/types/product';
 
 export default function AdminPanel() {
-  const { user, addProduct, updateProduct, setProductActive, removeProduct } = useApp();
+  const { user, addProduct, updateProduct, setProductActive, removeProduct, seedInitialCatalog } =
+    useApp();
   const [products, setProducts] = useState<Product[]>([]);
   const [stats, setStats] = useState<AdminStats>(emptyAdminStats);
   const [loading, setLoading] = useState(true);
   const [statsLoading, setStatsLoading] = useState(true);
+  const [seeding, setSeeding] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<NewProductForm>(emptyNewProduct);
 
@@ -83,6 +86,33 @@ export default function AdminPanel() {
           Acessado por: <strong>{user.name || 'Psic. Luana Sakovicz'}</strong>
         </div>
       </div>
+
+      {!loading && products.length === 0 && (
+        <div className="bg-[#FBF0F3] border border-[#E8A8B8]/40 rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 text-left">
+          <div className="space-y-1">
+            <p className="font-serif-brand font-bold text-[#88B7A5]">Catálogo vazio</p>
+            <p className="text-xs text-[#527A6B]/85">
+              Nenhum material está publicado no Supabase. Importe os {INITIAL_CATALOG_COUNT}{' '}
+              materiais iniciais (inclui o Baralho de Emoções com app interativo).
+            </p>
+          </div>
+          <button
+            type="button"
+            disabled={seeding}
+            onClick={async () => {
+              setSeeding(true);
+              const result = await seedInitialCatalog();
+              if (!result.error) {
+                await loadDashboard();
+              }
+              setSeeding(false);
+            }}
+            className="bg-[#88B7A5] hover:bg-[#72A190] disabled:opacity-60 text-white px-6 py-3 rounded-full text-xs font-bold transition-all shrink-0"
+          >
+            {seeding ? 'Publicando...' : `Importar ${INITIAL_CATALOG_COUNT} materiais`}
+          </button>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
         <div className="bg-[#EEF5F2] p-6 rounded-2xl border border-[#C8DDD4] text-left">
