@@ -22,30 +22,44 @@
 12. [API interna (Next.js)](#12-api-interna-nextjs)
 13. [Funcionalidades implementadas](#13-funcionalidades-implementadas)
 14. [Painel administrativo](#14-painel-administrativo)
-15. [Fluxo de compra (simulado)](#15-fluxo-de-compra-simulado)
-16. [Download protegido de arquivos](#16-download-protegido-de-arquivos)
-17. [Estatísticas (home e admin)](#17-estatísticas-home-e-admin)
-18. [Contato e redes sociais](#18-contato-e-redes-sociais)
-19. [Arquivos SQL — ordem de execução](#19-arquivos-sql--ordem-de-execução)
-20. [Problemas conhecidos e soluções](#20-problemas-conhecidos-e-soluções)
-21. [Próximas fases (não implementadas)](#21-próximas-fases-não-implementadas)
-22. [Referência rápida de arquivos importantes](#22-referência-rápida-de-arquivos-importantes)
+15. [Liberação manual de acesso (sem compra)](#15-liberação-manual-de-acesso-sem-compra)
+16. [Baralho terapêutico digital](#16-baralho-terapêutico-digital)
+17. [Fluxo de compra](#17-fluxo-de-compra)
+18. [Download protegido de arquivos](#18-download-protegido-de-arquivos)
+19. [Estatísticas (home e admin)](#19-estatísticas-home-e-admin)
+20. [Contato e redes sociais](#20-contato-e-redes-sociais)
+21. [Deploy (Vercel)](#21-deploy-vercel)
+22. [Arquivos SQL — ordem de execução](#22-arquivos-sql--ordem-de-execução)
+23. [Problemas conhecidos e soluções](#23-problemas-conhecidos-e-soluções)
+24. [Próximas fases (não implementadas)](#24-próximas-fases-não-implementadas)
+25. [Referência rápida de arquivos importantes](#25-referência-rápida-de-arquivos-importantes)
 
 ---
 
 ## 1. Visão geral
 
-Plataforma web para **venda e entrega de materiais clínicos** (PDFs, Word, links etc.) da Psic. Luana Sakovicz.
+Plataforma web para **venda e entrega de materiais clínicos** (PDFs, Word, apps interativos etc.) da Psic. Luana Sakovicz.
 
 **O que o sistema faz hoje:**
 
 - Catálogo público de materiais com filtros por categoria
 - Cadastro, login e recuperação de senha
-- Compra simulada (sem pagamento real ainda)
-- Biblioteca do cliente com leitor de conteúdo e download protegido
-- Painel admin para criar, editar, ativar/desativar e excluir produtos
+- **Produção:** botão WhatsApp para compra (sem pagamento online ainda)
+- **Desenvolvimento:** compra simulada opcional
+- Biblioteca do cliente com leitor de conteúdo, download protegido e **baralho interativo**
+- Painel admin: CRUD de produtos, métricas, importação do catálogo inicial e **liberação manual de acesso**
 - Upload de capa e arquivos para Supabase Storage
 - Métricas reais no admin e estatísticas públicas na home
+- **Baralho terapêutico** protegido por token (só quem tem acesso na plataforma consegue usar)
+
+**URLs de produção:**
+
+| Serviço | URL |
+|---------|-----|
+| Loja | https://psic-luanasakovicz-store.vercel.app |
+| Repositório (loja) | https://github.com/psi-luanasakovicz/psic.luanasakovicz.store |
+| Baralho interativo | https://baralho-terapeutico.vercel.app |
+| Repositório (baralho) | https://github.com/psi-luanasakovicz/baralho-terapeutico |
 
 **Origem do código:** o protótipo monolítico original está em `_legacy/plataforma_de_materiais_luana_sakovicz.tsx`. Foi migrado para **Next.js 15 + App Router + TypeScript + Tailwind + Supabase**.
 
@@ -57,9 +71,9 @@ Plataforma web para **venda e entrega de materiais clínicos** (PDFs, Word, link
 |------------|----------------|
 | **Next.js 15** | Framework React com App Router, SSR, API Routes |
 | **Supabase** | PostgreSQL, Auth, Storage, RLS, funções SQL |
-| **Vercel** *(recomendado para deploy)* | Hospedagem do frontend (ainda não configurado) |
+| **Vercel** | Hospedagem da loja e do baralho interativo |
 | **Mercado Pago** | Pagamento real — **não integrado ainda** |
-| **Git** | Controle de versão (se configurado localmente) |
+| **GitHub** | Controle de versão e deploy automático na Vercel |
 
 ### Projeto Supabase
 
@@ -78,7 +92,7 @@ Plataforma web para **venda e entrega de materiais clínicos** (PDFs, Word, link
 
 | Tecnologia | Versão (package.json) | Função |
 |------------|----------------------|--------|
-| Next.js | ^15.1.0 (build: 15.5.19) | Framework |
+| Next.js | ^15.1.0 | Framework |
 | React | ^19.0.0 | UI |
 | TypeScript | ^5 | Tipagem |
 | Tailwind CSS | ^3.4.0 | Estilos |
@@ -91,12 +105,20 @@ Plataforma web para **venda e entrega de materiais clínicos** (PDFs, Word, link
 - Playfair Display — títulos (`font-serif-brand`)
 - Plus Jakarta Sans — corpo (`font-sans-brand`)
 
-**Paleta de cores** (`src/lib/theme.ts`):
+**Paleta de cores** (`src/lib/theme.ts` — derivada da logomarca):
 
-- Fundo: `#F3F1F0`
-- Primária: `#8A645D`
-- Superfície: `#ECE9E8`
-- Borda: `#D4C6C2`
+| Token | Cor | Uso |
+|-------|-----|-----|
+| Primária | `#88B7A5` | Botões, destaques |
+| Primária hover | `#72A190` | Hover |
+| Accent (rosa) | `#E8A8B8` | Detalhes, badges |
+| Texto | `#527A6B` | Corpo |
+| Fundo | `#F8FAF9` | Página |
+| Superfície | `#EEF5F2` | Cards |
+| Superfície rosa | `#FBF0F3` | Destaques suaves |
+| Borda | `#C8DDD4` | Contornos |
+
+**Logo:** `public/logo-horizontal.png` (header).
 
 ---
 
@@ -106,9 +128,13 @@ Plataforma web para **venda e entrega de materiais clínicos** (PDFs, Word, link
 site vendas psi.luanasakovicz/
 ├── DOCUMENTACAO.md          ← este arquivo
 ├── package.json
+├── vercel.json              ← preset Next.js na Vercel
 ├── next.config.ts
 ├── .env.local               ← credenciais (NÃO commitar)
 ├── .env.local.example
+├── public/
+│   ├── logo-horizontal.png
+│   └── favicon.ico
 ├── scripts/
 │   └── clean-next.mjs       ← limpa cache .next
 ├── supabase/
@@ -124,18 +150,34 @@ site vendas psi.luanasakovicz/
 │   │   ├── cadastro/
 │   │   ├── materiais/
 │   │   ├── biblioteca/
+│   │   │   └── [slug]/app/  ← redireciona ao baralho com token
 │   │   ├── perfil/
 │   │   ├── admin/
-│   │   └── api/files/download/
-│   ├── components/          ← componentes React
+│   │   └── api/
+│   │       ├── files/download/
+│   │       └── interactive-app/verify/
+│   ├── components/
+│   │   ├── AdminPanel.tsx
+│   │   ├── AdminAccessGrant.tsx   ← liberação manual
+│   │   ├── InteractiveAppLauncher.tsx
+│   │   └── ...
 │   ├── context/
 │   │   └── AppContext.tsx   ← estado global (auth, compras, admin)
-│   ├── lib/                 ← utilitários, Supabase, mappers
-│   ├── types/               ← TypeScript (Product, Database, etc.)
-│   ├── data/                ← mocks de referência (seed)
-│   └── middleware.ts        ← proteção de rotas
+│   ├── lib/
+│   │   ├── interactive-apps.ts
+│   │   ├── interactive-app-token.ts
+│   │   ├── grant-product-access.ts
+│   │   ├── admin-users.ts
+│   │   ├── product-access.ts
+│   │   ├── checkout-config.ts
+│   │   └── ...
+│   ├── types/
+│   ├── data/
+│   └── middleware.ts
 └── _legacy/                 ← código original TSX
 ```
+
+**Projeto separado (baralho):** `C:\Users\Gabriel\Desktop\baralho-terapeutico` — app Vite com validação de token via API da loja.
 
 ---
 
@@ -155,7 +197,7 @@ cd "C:\Users\Gabriel\Desktop\site vendas psi.luanasakovicz"
 npm install
 ```
 
-Copie `.env.local.example` para `.env.local` e preencha as chaves do Supabase.
+Copie `.env.local.example` para `.env.local` e preencha as chaves.
 
 ### Banco de dados (primeira vez)
 
@@ -164,7 +206,7 @@ No **SQL Editor** do Supabase, execute **nesta ordem**:
 1. `supabase/schema.sql`
 2. `supabase/fix-grants.sql`
 3. `supabase/seed.sql` *(opcional — produtos de exemplo)*
-4. Todas as migrations em `supabase/migrations/` *(ver seção 19)*
+4. Todas as migrations em `supabase/migrations/` *(ver seção 22)*
 
 ### Tornar um usuário administrador
 
@@ -200,14 +242,7 @@ cd "C:\Users\Gabriel\Desktop\site vendas psi.luanasakovicz"
 npm run dev:clean
 ```
 
-Abra no navegador: **Chrome ou Edge** (`http://localhost:3000`). Evite o preview integrado do Cursor para testes — pode causar erros com React Server Components.
-
-### Produção local
-
-```powershell
-npm run build:clean
-npm run start
-```
+Abra no navegador: **Chrome ou Edge** (`http://localhost:3000`).
 
 ---
 
@@ -218,15 +253,27 @@ Arquivo: `.env.local` (na raiz, gitignored)
 | Variável | Obrigatória | Descrição |
 |----------|-------------|-----------|
 | `NEXT_PUBLIC_SUPABASE_URL` | Sim | URL do projeto Supabase |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Sim | Chave anon/public (JWT ou `sb_publishable_...`) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Sim | Chave anon/public |
+| `INTERACTIVE_APP_SECRET` | Sim (baralho) | Chave secreta para assinar tokens de acesso ao baralho |
+| `NEXT_PUBLIC_ENABLE_SIMULATED_CHECKOUT` | Não | `true` / `false` — compra simulada em produção |
 
-**Onde obter:** Supabase Dashboard → **Settings → API → Project URL / anon public key**
+**Onde obter Supabase:** Dashboard → **Settings → API**
+
+**Gerar `INTERACTIVE_APP_SECRET` (PowerShell):**
+
+```powershell
+[Convert]::ToBase64String((1..32 | ForEach-Object { Get-Random -Maximum 256 }))
+```
+
+Use o **mesmo valor** em `.env.local` e na Vercel (Settings → Environment Variables).
 
 Exemplo (`.env.local.example`):
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://lkgyfehlblarkwplldhb.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-aqui
+INTERACTIVE_APP_SECRET=defina-uma-chave-secreta-longa-aqui
+# NEXT_PUBLIC_ENABLE_SIMULATED_CHECKOUT=true
 ```
 
 > **Nunca** commite `.env.local`. Não é necessária service role key no frontend.
@@ -248,38 +295,12 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-aqui
 
 | Coluna | Tipo | Descrição |
 |--------|------|-----------|
-| `slug` | TEXT | URL amigável (`/materiais/ebook-ansiedade-tcc`) |
+| `slug` | TEXT | URL amigável (`/materiais/baralho-emocoes-criancas`) |
 | `delivery_files` | JSONB | Lista de arquivos entregues |
 | `cover_image_url` | TEXT | URL pública da capa |
 | `is_active` | BOOLEAN | `false` = oculto do catálogo |
 | `contents` | JSONB | Seções do leitor na biblioteca |
 | `details` | JSONB | Lista de itens inclusos |
-
-### Formato de `delivery_files` (JSON)
-
-```json
-[
-  {
-    "type": "pdf",
-    "label": "E-book completo",
-    "storagePath": "ebook-ansiedade-tcc/1710000000000-arquivo.pdf"
-  },
-  {
-    "type": "link",
-    "label": "Vídeo complementar",
-    "url": "https://..."
-  }
-]
-```
-
-**Tipos suportados:** `pdf`, `docx`, `link`, `audio`, `zip`, `other`
-
-### Row Level Security (RLS)
-
-- **products:** leitura pública de ativos; admin vê e edita todos
-- **profiles:** usuário lê/edita o próprio; admin gerencia todos
-- **purchases / licenses:** usuário vê os próprios; admin vê todos
-- **Storage:** políticas por bucket (ver seção 9)
 
 ### Funções SQL
 
@@ -287,9 +308,11 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-aqui
 |--------|-----------|
 | `is_admin()` | Retorna se o usuário logado é admin |
 | `handle_new_user()` | Trigger: cria `profiles` ao cadastrar |
-| `increment_product_sales(uuid)` | Incrementa contador de vendas do produto |
+| `increment_product_sales(uuid)` | Incrementa contador de vendas |
 | `generate_license_code()` | Gera código `LUANA-YYYYMMDD-XXXXXXXX` |
 | `get_public_stats()` | Estatísticas públicas para a home |
+| `verify_interactive_app_access(uuid, text)` | Valida compra para token do baralho |
+| `admin_grant_product_access(uuid, uuid, numeric)` | Admin libera material sem compra do cliente |
 
 ---
 
@@ -301,11 +324,6 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-aqui
 |--------|----------|-----|
 | `product-covers` | **Sim** | Imagens de capa (JPG, PNG, WebP — máx. 5 MB) |
 | `product-files` | **Não** | PDFs, Word, áudios, ZIP (máx. 50 MB) |
-
-### Caminhos dos arquivos
-
-- **Capa:** `{slug}-{timestamp}.{ext}` → URL pública
-- **Entrega:** `{slug}/{timestamp}-{nome-arquivo}` → download via URL assinada
 
 ### Quem pode fazer o quê
 
@@ -320,16 +338,6 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-aqui
 
 ## 10. Supabase — autenticação e perfis
 
-### Fluxos
-
-| Fluxo | Rota | Arquivo principal |
-|-------|------|-------------------|
-| Cadastro | `/cadastro` | `RegisterForm.tsx` |
-| Login | `/login` | `LoginForm.tsx` |
-| Recuperar senha | botão no login | `AppContext.resetPassword` |
-| Logout | header / perfil | `AppContext.logout` |
-| Perfil | `/perfil` | `Profile.tsx` |
-
 ### Middleware (`src/middleware.ts`)
 
 Rotas protegidas (exigem login):
@@ -340,23 +348,10 @@ Rotas protegidas (exigem login):
 
 Usuário não logado → redireciona para `/login?redirect=...`
 
-### Configuração recomendada em desenvolvimento
+### Visibilidade do link admin
 
-Supabase Dashboard → **Authentication → Providers → Email**:
-
-- Desativar **"Confirm email"** para cadastro instantâneo em dev
-- Ou confirmar e-mail manualmente em **Authentication → Users**
-
-### Erros de auth traduzidos
-
-Arquivo: `src/lib/auth-errors.ts`
-
-| Erro Supabase | Mensagem exibida |
-|---------------|------------------|
-| invalid_credentials | E-mail ou senha incorretos |
-| email_not_confirmed | Confirme seu e-mail |
-| over_email_send_rate_limit | Limite de envio de e-mails atingido |
-| user already registered | E-mail já cadastrado |
+- **Header:** link "Painel Admin" só para `user.isAdmin`
+- **Footer:** link "Painel Administrativo" só para admin logado
 
 ---
 
@@ -364,15 +359,16 @@ Arquivo: `src/lib/auth-errors.ts`
 
 | Rota | Acesso | Descrição |
 |------|--------|-----------|
-| `/` | Público | Home com hero, destaques, FAQ |
-| `/materiais` | Público | Catálogo completo com filtros |
-| `/materiais/[slug]` | Público | Detalhes e botão de compra |
+| `/` | Público | Home (hero, destaques, diferenciais, FAQ) |
+| `/materiais` | Público | Catálogo com filtros |
+| `/materiais/[slug]` | Público | Detalhes; WhatsApp ou compra simulada (dev) |
 | `/login` | Público | Login |
 | `/cadastro` | Público | Cadastro |
 | `/biblioteca` | Logado | Dashboard do cliente |
-| `/biblioteca/[slug]` | Logado + comprou | Leitor + downloads |
+| `/biblioteca/[slug]` | Logado + comprou | Leitor, downloads e botão do baralho |
+| `/biblioteca/[slug]/app` | Logado + comprou | **Redireciona** ao baralho com token |
 | `/perfil` | Logado | Editar nome e CRP |
-| `/admin` | Admin | Gestão de produtos e métricas |
+| `/admin` | Admin | Gestão de produtos, métricas e liberação manual |
 
 ---
 
@@ -382,25 +378,30 @@ Arquivo: `src/lib/auth-errors.ts`
 
 Gera URL assinada temporária (120 segundos) para download de arquivo privado.
 
-**Query params:**
-
-| Param | Obrigatório | Descrição |
-|-------|-------------|-----------|
-| `productId` | Sim | UUID do produto |
-| `path` | Sim | `storagePath` do arquivo no bucket `product-files` |
-
-**Respostas:**
-
-| Status | Corpo |
-|--------|-------|
-| 200 | `{ "url": "https://...signed..." }` |
-| 401 | Não autenticado |
-| 403 | Sem compra aprovada |
-| 500 | Erro ao gerar URL |
+**Query params:** `productId`, `path` (storagePath)
 
 **Arquivo:** `src/app/api/files/download/route.ts`
 
-**Cliente:** `src/lib/protected-download.ts` → usado em `ProductDownloads.tsx`
+---
+
+### `GET /api/interactive-app/verify`
+
+Valida token HMAC do baralho interativo e confirma compra aprovada no banco.
+
+**Query param:** `token`
+
+**Respostas:**
+
+| Status | Significado |
+|--------|-------------|
+| 200 | `{ "valid": true, "slug": "..." }` |
+| 401 | Token inválido ou expirado |
+| 403 | Compra não encontrada |
+| 400 | Token ausente |
+
+**CORS:** permite origem `https://baralho-terapeutico.vercel.app` (e localhost do baralho em dev).
+
+**Arquivo:** `src/app/api/interactive-app/verify/route.ts`
 
 ---
 
@@ -408,32 +409,32 @@ Gera URL assinada temporária (120 segundos) para download de arquivo privado.
 
 ### Catálogo e vitrine
 
-- Listagem de produtos ativos do Supabase
+- Produtos ativos do Supabase
 - Cards com capa (imagem ou gradiente)
-- Filtro por categoria: Crianças, Adolescentes, Adultos, Gestão Clínica
-- Página de detalhes com descrição, itens inclusos, arquivos (sem download)
+- Filtro por categoria
+- Página de detalhes com **lightbox** na capa (clique para ampliar)
+- Nota informativa quando o material inclui app interativo (sem link público)
 
 ### Biblioteca do cliente
 
-- Lista de materiais comprados
+- Materiais comprados ou liberados manualmente
 - Leitor por seções (`contents`)
-- Download protegido de arquivos (`ProductDownloads`)
-- Acesso a produtos inativos se já comprados
+- Download protegido (`ProductDownloads`)
+- **Baralho interativo:** botão abre o app direto (nova aba via redirect com token)
+- Acesso a produtos inativos se já possui compra/liberação
+
+### Home (ajustes recentes)
+
+- Removido bloco promocional do app interativo
+- Removido card de "Feedback recente" na seção de diferenciais
+- Hero: apenas botão "Explorar Materiais" (sem "Conhecer Proposta")
 
 ### Admin
 
-- Criar produto com todos os campos
-- **Editar** produto existente (botão lápis)
-- Upload de capa e arquivos
-- Ativar / desativar / excluir produtos
-- Métricas reais: faturamento, vendas, clientes, média de estrelas
-
-### Home
-
-- Estatísticas reais (com fallback se SQL não rodou):
-  - Terapeutas na plataforma
-  - Materiais disponíveis
-- Links reais no footer (Instagram, LinkedIn, WhatsApp, e-mail)
+- Lista de produtos como tela padrão; formulário só ao **Adicionar** ou **Editar**
+- Importar 4 materiais iniciais (catálogo vazio)
+- **Liberação manual de acesso** (sem compra) — ver seção 15
+- Métricas reais de faturamento e vendas
 
 ---
 
@@ -441,101 +442,196 @@ Gera URL assinada temporária (120 segundos) para download de arquivo privado.
 
 **Rota:** `/admin`
 
-### Formulário — campos
+### Gestão de produtos
 
-| Campo | Descrição |
-|-------|-----------|
-| Título / Subtítulo | Nome do material |
-| Preço / Categoria / Selo | Comercial |
-| Foto de capa | Upload JPG/PNG/WebP |
-| Páginas / Formato / Bônus | Metadados |
-| Descrição | Texto longo |
-| Detalhes inclusos | Um item por linha |
-| Conteúdo do leitor | Seções separadas por linha em branco |
-| Arquivos e links | Upload ou URL |
+| Ação | Descrição |
+|------|-----------|
+| Adicionar material | Botão abre formulário full-width |
+| Editar (lápis) | Formulário full-width; lista oculta |
+| Ativar / Desativar | Controla visibilidade no catálogo |
+| Excluir | Só se não houver compras |
+| Importar 4 materiais | Seed via `seed-products.ts` |
 
-### Ações na lista de produtos
+### Campos do formulário
 
-| Botão | Ação |
-|-------|------|
-| 👁 Livro | Ver no catálogo (só ativos) |
-| ✏️ Lápis | Editar no formulário |
-| ⚡ Verde | Ativar (se inativo) |
-| ⚡ Âmbar | Desativar |
-| 🗑 Vermelho | Excluir *(bloqueado se houver compras)* |
+Título, subtítulo, preço, categoria, capa, páginas, formato, bônus, descrição, detalhes (linhas), conteúdo do leitor, arquivos de entrega.
 
-### Regras de exclusão
-
-- **Com compras:** não exclui — use desativar
-- **Sem compras:** exclui permanentemente do banco
+> Campos vazios (ex.: bônus) são salvos como vazio — não voltam ao valor anterior.
 
 ---
 
-## 15. Fluxo de compra (simulado)
+## 15. Liberação manual de acesso (sem compra)
 
-> Pagamento real **não** está integrado. A compra é registrada diretamente como `approved`.
+Permite conceder material a uma conta **sem o cliente passar pelo checkout** — cortesia, brinde, teste, etc.
+
+### Onde fica
+
+Painel Admin → seção **"Liberar Acesso Manual (sem compra)"**
+
+### Passo a passo
+
+1. Cliente cria conta no site (cadastro)
+2. Admin busca o **e-mail** da conta
+3. Seleciona a conta nos resultados
+4. Marca um ou mais materiais
+5. Clica em **"Conceder acesso (sem compra)"**
+
+O material aparece imediatamente na **Área do Cliente** do cliente.
+
+### O que acontece no banco
+
+A função `admin_grant_product_access` (SECURITY DEFINER):
+
+1. Verifica se quem chama é admin
+2. Cria `purchases` com status `approved`
+3. Cria `licenses` com código único
+4. Incrementa contador de vendas do produto
+
+### Pré-requisito SQL
+
+Execute `supabase/migrations/add-admin-grant-access.sql` no Supabase.
+
+### Arquivos
+
+| Arquivo | Função |
+|---------|--------|
+| `src/components/AdminAccessGrant.tsx` | UI de busca e liberação |
+| `src/lib/admin-users.ts` | Busca perfis por e-mail |
+| `src/lib/grant-product-access.ts` | Chama RPC no Supabase |
+
+### Diferença: liberação manual vs pagamento futuro
+
+| Situação | Quem libera |
+|----------|-------------|
+| Pagamento online (Mercado Pago — futuro) | Automático após confirmação |
+| Cortesia / brinde / teste | Admin, manualmente, nesta seção |
+
+---
+
+## 16. Baralho terapêutico digital
+
+App externo integrado ao material `baralho-emocoes-criancas`.
+
+### Fluxo de acesso
+
+```
+Cliente com compra/liberação
+        ↓
+Biblioteca → "Abrir baralho interativo"
+        ↓
+/biblioteca/baralho-emocoes-criancas/app (servidor valida compra)
+        ↓
+Gera token HMAC (validade: 2 horas)
+        ↓
+Redirect para baralho-terapeutico.vercel.app/?token=...
+        ↓
+Baralho chama /api/interactive-app/verify
+        ↓
+Se válido → app carrega | Se não → tela "Acesso restrito"
+```
+
+### Proteção
+
+| Acesso | Resultado |
+|--------|-----------|
+| URL direta do baralho (sem token) | **Bloqueado** |
+| `/biblioteca/.../app` sem login | Redireciona para login |
+| Logado sem compra/liberação | 404 |
+| Logado com acesso | Baralho abre com token |
+
+### Configuração
+
+1. `INTERACTIVE_APP_SECRET` na loja (local + Vercel)
+2. SQL `add-interactive-app-access-rpc.sql` no Supabase
+3. Deploy da loja e do baralho (baralho valida token via API)
+
+### Arquivos (loja)
+
+| Arquivo | Função |
+|---------|--------|
+| `src/lib/interactive-apps.ts` | Config do app (slug, URL, badge) |
+| `src/lib/interactive-app-token.ts` | Cria e valida tokens |
+| `src/lib/product-access.ts` | Exige compra nas rotas protegidas |
+| `src/app/biblioteca/[slug]/app/page.tsx` | Redirect com token |
+| `src/components/InteractiveAppLauncher.tsx` | Botão na biblioteca |
+
+### Arquivos (baralho — projeto separado)
+
+| Arquivo | Função |
+|---------|--------|
+| `src/access-gate.js` | Bloqueia sem token; chama API da loja |
+| `src/main.js` | Só carrega o jogo após validação |
+
+### Limitação
+
+Se alguém **copiar o link com token** logo após abrir, ainda pode usar por até **2 horas**. Depois expira.
+
+---
+
+## 17. Fluxo de compra
+
+### Produção (padrão)
+
+- Botão **"Falar no WhatsApp"** na página do produto
+- Checkout simulado **desligado** (`checkout-config.ts`)
+- Após pagamento manual: admin usa **liberação manual** (seção 15) ou, no futuro, webhook do Mercado Pago
+
+### Desenvolvimento / testes
+
+Compra simulada ativa quando:
+
+- `NODE_ENV=development`, ou
+- `NEXT_PUBLIC_ENABLE_SIMULATED_CHECKOUT=true`
 
 **Arquivo:** `src/lib/purchases.ts` → `simulatePurchase()`
 
 **Passos ao clicar "Adquirir":**
 
-1. Verifica se usuário está logado
+1. Verifica login
 2. Verifica se já possui o material
-3. Insere registro em `purchases` (status `approved`)
-4. Insere registro em `licenses` com código único
-5. Chama `increment_product_sales(product_id)`
-6. Redireciona para `/biblioteca`
+3. Insere `purchases` (approved) + `licenses`
+4. Incrementa vendas
+5. Redireciona para `/biblioteca`
 
 ---
 
-## 16. Download protegido de arquivos
+## 18. Download protegido de arquivos
 
 ```
 Cliente clica "Baixar"
         ↓
-protected-download.ts chama /api/files/download
+protected-download.ts → /api/files/download
         ↓
-API verifica sessão + compra aprovada (ou admin)
+Verifica sessão + compra aprovada (ou admin)
         ↓
-Supabase Storage gera signed URL (120s)
+Signed URL (120s) do Supabase Storage
         ↓
-Navegador abre o arquivo
+Navegador baixa o arquivo
 ```
 
-- **Links externos** (`type: link`): abrem direto, sem API
-- **Arquivos no Storage** (`storagePath`): passam pela verificação
+- **Links externos** (`type: link`): abrem direto
+- **Arquivos no Storage**: passam pela verificação
 
 ---
 
-## 17. Estatísticas (home e admin)
+## 19. Estatísticas (home e admin)
 
 ### Home (`HeroSection`)
 
-| Métrica | Fonte |
-|---------|-------|
-| 100% Embasamento Clínico | Texto fixo |
-| Terapeutas na plataforma | `get_public_stats().activeTherapists` |
-| Materiais disponíveis | `get_public_stats().activeMaterials` |
-
-**Fallback** (se função SQL não existir): conta produtos ativos e soma `sales`.
+- Terapeutas na plataforma → `get_public_stats().activeTherapists`
+- Materiais disponíveis → `get_public_stats().activeMaterials`
 
 **Arquivo:** `src/lib/public-stats.ts`
 
-### Admin (`AdminPanel`)
+### Admin
 
-| Card | Fonte |
-|------|-------|
-| Total Faturado | Soma de `purchases.amount` (approved) |
-| Este mês | Compras do mês atual |
-| Vendas Totais | Contagem de compras approved |
-| Média de estrelas | Média ponderada por `products.sales` |
-| Clientes Ativos | Usuários distintos com compra |
+Total faturado, vendas do mês, vendas totais, clientes ativos com compra.
 
 **Arquivo:** `src/lib/admin-stats.ts`
 
 ---
 
-## 18. Contato e redes sociais
+## 20. Contato e redes sociais
 
 Centralizado em `src/lib/theme.ts`:
 
@@ -550,9 +646,35 @@ Centralizado em `src/lib/theme.ts`:
 
 ---
 
-## 19. Arquivos SQL — ordem de execução
+## 21. Deploy (Vercel)
 
-### Instalação inicial (projeto novo)
+### Loja
+
+1. Repositório conectado: `psi-luanasakovicz/psic.luanasakovicz.store`
+2. **Framework Preset:** Next.js (não usar Output Directory `public`)
+3. Variáveis obrigatórias:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `INTERACTIVE_APP_SECRET`
+4. Push na branch `main` → deploy automático
+
+### Baralho
+
+1. Repositório: `psi-luanasakovicz/baralho-terapeutico`
+2. Deploy automático na Vercel ao push em `main`
+
+### Supabase Auth (produção)
+
+Em **Authentication → URL Configuration**, incluir:
+
+- Site URL: `https://psic-luanasakovicz-store.vercel.app`
+- Redirect URLs: mesma URL + `/login`, `/cadastro`
+
+---
+
+## 22. Arquivos SQL — ordem de execução
+
+### Instalação inicial
 
 ```
 1. supabase/schema.sql
@@ -560,18 +682,18 @@ Centralizado em `src/lib/theme.ts`:
 3. supabase/seed.sql                    (opcional)
 ```
 
-### Migrations incrementais (projeto já existente)
+### Migrations incrementais
 
 Execute no SQL Editor **se ainda não rodou**:
 
 | Arquivo | O que faz |
 |---------|-----------|
-| `migrations/add-delivery-files.sql` | Coluna `delivery_files` |
-| `migrations/add-cover-image.sql` | Coluna `cover_image_url` + bucket `product-covers` |
-| `migrations/add-product-files-storage.sql` | Bucket `product-files` + políticas de download |
-| `migrations/add-public-stats.sql` | Função `get_public_stats()` |
-
-> `add-product-files-storage.sql` já inclui `get_public_stats`. Se rodou só parte dele, use `add-public-stats.sql` separadamente.
+| `add-delivery-files.sql` | Coluna `delivery_files` |
+| `add-cover-image.sql` | Coluna `cover_image_url` + bucket capas |
+| `add-product-files-storage.sql` | Bucket `product-files` + políticas |
+| `add-public-stats.sql` | Função `get_public_stats()` |
+| `add-interactive-app-access-rpc.sql` | Valida compra para token do baralho |
+| `add-admin-grant-access.sql` | Admin libera material sem compra |
 
 ### Corrigir permissões
 
@@ -583,109 +705,75 @@ Se aparecer **"permission denied for table products"**:
 
 ---
 
-## 20. Problemas conhecidos e soluções
+## 23. Problemas conhecidos e soluções
 
-### Erro: `__webpack_modules__[moduleId] is not a function`
-
-**Causa:** cache corrompido da pasta `.next` (comum no Windows).
-
-**Solução:**
+### Cache `.next` corrompido
 
 ```powershell
 npm run dev:clean
 ```
 
-Não rode `npm run build` e `npm run dev` ao mesmo tempo.
+### Função SQL não encontrada (`admin_grant_product_access`, `verify_interactive_app_access`)
 
----
+Execute as migrations correspondentes na seção 22.
 
-### Erro: `Cannot find module './611.js'` / `routes-manifest.json ENOENT`
+### Baralho abre para todo mundo (sem "Acesso restrito")
 
-**Causa:** mesma — cache `.next` inconsistente (HMR interrompido).
+- Confirme deploy do **baralho** com `access-gate.js`
+- Teste em aba anônima com hard refresh
 
-**Solução:**
+### Baralho não abre nem para quem comprou
 
-```powershell
-npm run dev:clean
-```
+- `INTERACTIVE_APP_SECRET` configurado na Vercel?
+- Redeploy após adicionar a variável
+- Migration `add-interactive-app-access-rpc.sql` rodada?
 
-Se persistir, pare todos os processos Node e apague `.next` manualmente.
+### Checkout simulado em produção
 
----
-
-### Erro: `get_public_stats without parameters in the schema cache`
-
-**Causa:** função SQL não criada no Supabase.
-
-**Solução:** execute `supabase/migrations/add-public-stats.sql`
-
-O site funciona com fallback (materiais contados, terapeutas = 0 até rodar o SQL).
-
----
-
-### Erro: `email rate limit exceeded`
-
-**Causa:** muitas tentativas de cadastro/recuperação de senha no Supabase.
-
-**Solução:** aguardar 15–60 min; desativar confirmação de e-mail em dev; confirmar usuário manualmente no dashboard.
-
----
+Por padrão está **desligado**. Só ative com `NEXT_PUBLIC_ENABLE_SIMULATED_CHECKOUT=true` para testes.
 
 ### Erro 409 ao excluir produto
 
-**Causa:** produto tem compras vinculadas (FK RESTRICT).
+Produto tem compras — use **Desativar**.
 
-**Solução:** use **Desativar** em vez de excluir.
+### Preview do Cursor
 
----
-
-### Erro ao upload de capa/arquivo
-
-**Causa:** bucket ou políticas não criados.
-
-**Solução:** execute migrations de cover e product-files; confirme que o usuário é `admin` em `profiles`.
+Use **Chrome/Edge** para testes; o inspetor do Cursor pode causar erros com RSC.
 
 ---
 
-### Preview do Cursor vs navegador externo
-
-Erros com `SegmentViewNode` / React Client Manifest vêm do inspetor do Cursor. **Use Chrome/Edge** para testes.
-
----
-
-## 21. Próximas fases (não implementadas)
+## 24. Próximas fases (não implementadas)
 
 | Fase | Descrição |
 |------|-----------|
-| **Mercado Pago** | Pagamento real, webhook, status pending → approved |
-| **Deploy Vercel** | Domínio customizado, variáveis de ambiente |
+| **Mercado Pago** | Pagamento real, webhook, `pending` → `approved` automático |
+| **Domínio customizado** | `psic.luanasakovicz.store` |
 | **E-mail transacional** | Confirmação de compra, recibo |
-| **Edição avançada** | Editor visual de `contents`, preview antes de publicar |
-| **Analytics** | Google Analytics ou Plausible |
-| **SEO** | metadata por produto, sitemap |
+| **Revogar acesso** | Admin remover liberação/compra |
+| **Analytics / SEO** | Métricas e metadata por produto |
 
 ---
 
-## 22. Referência rápida de arquivos importantes
+## 25. Referência rápida de arquivos importantes
 
 | Arquivo | Responsabilidade |
 |---------|------------------|
 | `src/context/AppContext.tsx` | Auth, compras, CRUD admin |
 | `src/components/AdminPanel.tsx` | UI do admin |
+| `src/components/AdminAccessGrant.tsx` | Liberação manual de acesso |
 | `src/lib/purchases.ts` | Compra simulada |
+| `src/lib/grant-product-access.ts` | RPC liberação admin |
+| `src/lib/interactive-app-token.ts` | Tokens do baralho |
+| `src/lib/interactive-apps.ts` | Config apps interativos |
+| `src/lib/product-access.ts` | Guard de rotas da biblioteca |
+| `src/lib/checkout-config.ts` | Proteção checkout em produção |
 | `src/lib/product-files.ts` | Upload PDF/Word |
 | `src/lib/product-covers.ts` | Upload capa |
-| `src/lib/product-form.ts` | Converter produto ↔ formulário |
-| `src/lib/mappers/product.ts` | DB row ↔ Product |
-| `src/lib/products-server.ts` | Fetch SSR (catálogo) |
-| `src/lib/products-client.ts` | Fetch client (admin) |
-| `src/lib/supabase/client.ts` | Cliente browser |
-| `src/lib/supabase/server.ts` | Cliente server (cookies) |
+| `src/lib/seed-products.ts` | Importação catálogo inicial |
 | `src/lib/supabase/middleware.ts` | Sessão + proteção de rotas |
-| `src/types/product.ts` | Tipos Product, DeliveryFile |
-| `src/types/database.ts` | Tipos gerados do Supabase |
+| `src/types/database.ts` | Tipos Supabase |
 | `supabase/schema.sql` | Schema completo |
-| `next.config.ts` | Cache webpack em dev |
+| `vercel.json` | Config deploy Vercel |
 
 ---
 
@@ -693,8 +781,9 @@ Erros com `SegmentViewNode` / React Client Manifest vêm do inspetor do Cursor. 
 
 - **Cliente:** Psic. Luana Sakovicz
 - **E-mail:** psi.luanasakovicz@gmail.com
-- **Repositório local:** `C:\Users\Gabriel\Desktop\site vendas psi.luanasakovicz`
+- **Repositório local (loja):** `C:\Users\Gabriel\Desktop\site vendas psi.luanasakovicz`
+- **Repositório local (baralho):** `C:\Users\Gabriel\Desktop\baralho-terapeutico`
 
 ---
 
-*Documento gerado para consulta futura. Atualize este arquivo quando novas funcionalidades forem adicionadas (ex.: Mercado Pago, deploy).*
+*Atualize este arquivo quando novas funcionalidades forem adicionadas (ex.: Mercado Pago, domínio customizado).*

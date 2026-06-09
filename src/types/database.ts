@@ -183,6 +183,10 @@ export interface Database {
         Args: { p_user_id: string; p_product_slug: string };
         Returns: boolean;
       };
+      admin_grant_product_access: {
+        Args: { p_user_id: string; p_product_id: string; p_amount: number | null };
+        Returns: Json;
+      };
     };
     Enums: {
       user_role: UserRole;

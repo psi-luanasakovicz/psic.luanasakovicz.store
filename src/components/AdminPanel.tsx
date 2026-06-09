@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { BookOpen, Pencil, Plus, Power, PowerOff, Trash2, X } from 'lucide-react';
 import DeliveryFilesEditor from '@/components/DeliveryFilesEditor';
 import CoverImageField from '@/components/CoverImageField';
+import AdminAccessGrant from '@/components/AdminAccessGrant';
 import { emptyNewProduct, useApp } from '@/context/AppContext';
 import { emptyAdminStats, fetchAdminStats, formatBRL, type AdminStats } from '@/lib/admin-stats';
 import { productToForm } from '@/lib/product-form';
@@ -13,7 +14,7 @@ import { INITIAL_CATALOG_COUNT } from '@/lib/seed-products';
 import type { NewProductForm, Product } from '@/types/product';
 
 export default function AdminPanel() {
-  const { user, addProduct, updateProduct, setProductActive, removeProduct, seedInitialCatalog } =
+  const { user, addProduct, updateProduct, setProductActive, removeProduct, seedInitialCatalog, showToast } =
     useApp();
   const [products, setProducts] = useState<Product[]>([]);
   const [stats, setStats] = useState<AdminStats>(emptyAdminStats);
@@ -171,6 +172,12 @@ export default function AdminPanel() {
           <span className="text-[10px] text-[#527A6B]/70">Com compra aprovada</span>
         </div>
       </div>
+
+      <AdminAccessGrant
+        products={products}
+        onGranted={loadDashboard}
+        showToast={showToast}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start text-left">
         {showForm && (
