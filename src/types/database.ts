@@ -122,6 +122,7 @@ export interface Database {
           product_id: string;
           amount: number;
           status: PurchaseStatus;
+          payment_reference: string | null;
           created_at: string;
         };
         Insert: {
@@ -130,6 +131,7 @@ export interface Database {
           product_id: string;
           amount: number;
           status?: PurchaseStatus;
+          payment_reference?: string | null;
           created_at?: string;
         };
         Update: {
@@ -138,6 +140,7 @@ export interface Database {
           product_id?: string;
           amount?: number;
           status?: PurchaseStatus;
+          payment_reference?: string | null;
           created_at?: string;
         };
         Relationships: [];
@@ -185,6 +188,14 @@ export interface Database {
       };
       admin_grant_product_access: {
         Args: { p_user_id: string; p_product_id: string; p_amount: number | null };
+        Returns: Json;
+      };
+      admin_revoke_product_access: {
+        Args: { p_user_id: string; p_product_id: string };
+        Returns: Json;
+      };
+      approve_purchase_payment: {
+        Args: { p_purchase_id: string; p_payment_reference: string | null };
         Returns: Json;
       };
     };

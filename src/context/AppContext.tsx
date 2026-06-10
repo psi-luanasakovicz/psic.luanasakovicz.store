@@ -55,6 +55,7 @@ interface AppContextValue {
     password: string;
   }) => Promise<{ error: string | null }>;
   resetPassword: (email: string) => Promise<{ error: string | null }>;
+  updatePassword: (newPassword: string) => Promise<{ error: string | null }>;
   logout: () => Promise<void>;
   refreshUserData: () => Promise<void>;
   buyProduct: (product: Product) => Promise<void>;
@@ -65,6 +66,7 @@ interface AppContextValue {
   seedInitialCatalog: () => Promise<{ error: string | null; count: number }>;
   hasPurchased: (productId: string) => boolean;
   updateUserProfile: (data: { name: string; crp: string }) => Promise<{ error: string | null }>;
+  startMercadoPagoCheckout: (product: Product) => Promise<void>;
 }
 
 const AppContext = createContext<AppContextValue | null>(null);
@@ -246,6 +248,19 @@ export function AppProvider({ children }: { children: ReactNode }) {
     [supabase],
   );
 
+  const updatePassword = useCallback(
+    async (newPassword: string) => {
+      const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+      if (error) {
+        return { error: translateAuthError(error) };
+      }
+
+      return { error: null };
+    },
+    [supabase],
+  );
+
   const logout = useCallback(async () => {
     await supabase.auth.signOut();
     clearUserData();
@@ -299,6 +314,42 @@ export function AppProvider({ children }: { children: ReactNode }) {
       router.refresh();
     },
     [user, purchasedProductIds, router, showToast, refreshUserData],
+  );
+
+  const startMercadoPagoCheckout = useCallback(
+    async (product: Product) => {
+      if (!user.isLoggedIn || !user.id) {
+        showToast('Por favor, faça login ou cadastre-se para adquirir os materiais.');
+        router.push('/login');
+        return;
+      }
+
+      if (purchasedProductIds.includes(product.id)) {
+        showToast('Você já possui este material! Acesse-o na sua Área do Cliente.');
+        router.push('/biblioteca');
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/checkout/mercadopago', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId: product.id }),
+        });
+
+        const data = (await response.json()) as { checkoutUrl?: string; error?: string };
+
+        if (!response.ok || !data.checkoutUrl) {
+          showToast(data.error ?? 'Não foi possível iniciar o pagamento.');
+          return;
+        }
+
+        window.location.href = data.checkoutUrl;
+      } catch {
+        showToast('Erro de conexão ao iniciar o pagamento.');
+      }
+    },
+    [user, purchasedProductIds, router, showToast],
   );
 
   const addProduct = useCallback(
@@ -371,7 +422,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       }
 
       showToast('Novo recurso adicionado ao catálogo com sucesso!');
-      router.push('/materiais');
+      router.push('/catalogo');
       router.refresh();
     },
     [user.isAdmin, supabase, router, showToast],
@@ -564,6 +615,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       login,
       register,
       resetPassword,
+      updatePassword,
       logout,
       refreshUserData,
       buyProduct,
@@ -574,6 +626,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       seedInitialCatalog: seedInitialCatalogAction,
       hasPurchased,
       updateUserProfile,
+      startMercadoPagoCheckout,
     }),
     [
       user,
@@ -587,6 +640,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       login,
       register,
       resetPassword,
+      updatePassword,
       logout,
       refreshUserData,
       buyProduct,
@@ -597,6 +651,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       seedInitialCatalogAction,
       hasPurchased,
       updateUserProfile,
+      startMercadoPagoCheckout,
     ],
   );
 

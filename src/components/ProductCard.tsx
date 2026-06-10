@@ -62,7 +62,7 @@ export default function ProductCard({ product, variant = 'featured' }: ProductCa
               </span>
             </div>
             <Link
-              href={`/materiais/${product.slug}`}
+              href={`/catalogo/${product.slug}`}
               className="bg-[#88B7A5] hover:bg-[#72A190] text-[#F8FAF9] text-xs font-semibold px-4 py-2 rounded-full transition-all flex items-center gap-1"
             >
               <span>Detalhes</span>
@@ -121,7 +121,7 @@ export default function ProductCard({ product, variant = 'featured' }: ProductCa
             <span className="font-serif-brand text-lg font-bold">R$ {product.price.toFixed(2)}</span>
           </div>
           <Link
-            href={`/materiais/${product.slug}`}
+            href={`/catalogo/${product.slug}`}
             className="bg-[#88B7A5] hover:bg-[#72A190] text-[#F8FAF9] text-xs font-semibold px-4 py-2 rounded-full transition-all flex items-center gap-1"
           >
             <span>Saiba Mais</span>

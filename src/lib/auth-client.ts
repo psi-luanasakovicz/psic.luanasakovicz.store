@@ -19,6 +19,13 @@ export function mapProfileToUser(profile: ProfileRow | null, isLoggedIn: boolean
     email: profile.email,
     crp: profile.crp,
     role: profile.role,
+    memberSince: profile.created_at
+      ? new Date(profile.created_at).toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric',
+        })
+      : undefined,
     isLoggedIn: true,
     isAdmin: profile.role === 'admin',
   };

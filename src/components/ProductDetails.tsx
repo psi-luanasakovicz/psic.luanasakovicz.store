@@ -8,6 +8,7 @@ import ProductCover from '@/components/ProductCover';
 import { useApp } from '@/context/AppContext';
 import {
   CHECKOUT_UNAVAILABLE_MESSAGE,
+  isMercadoPagoCheckoutEnabled,
   isSimulatedCheckoutEnabled,
 } from '@/lib/checkout-config';
 import { getInteractiveApp } from '@/lib/interactive-apps';
@@ -19,8 +20,9 @@ interface ProductDetailsProps {
 }
 
 export default function ProductDetails({ product }: ProductDetailsProps) {
-  const { buyProduct } = useApp();
-  const simulatedCheckoutEnabled = isSimulatedCheckoutEnabled();
+  const { buyProduct, startMercadoPagoCheckout } = useApp();
+  const mercadoPagoEnabled = isMercadoPagoCheckoutEnabled();
+  const simulatedCheckoutEnabled = isSimulatedCheckoutEnabled() && !mercadoPagoEnabled;
   const interactiveApp = getInteractiveApp(product.slug);
   const whatsappUrl = `${theme.contact.social.whatsapp}?text=${encodeURIComponent(
     `Olá! Gostaria de adquirir o material "${product.title}".`,
@@ -29,7 +31,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
   return (
     <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-12">
       <Link
-        href="/materiais"
+        href="/catalogo"
         className="inline-flex items-center gap-2 text-xs font-semibold hover:opacity-85"
       >
         <ArrowLeft className="w-4 h-4" />
@@ -190,7 +192,16 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               </div>
             </div>
 
-            {simulatedCheckoutEnabled ? (
+            {mercadoPagoEnabled ? (
+              <button
+                type="button"
+                onClick={() => startMercadoPagoCheckout(product)}
+                className="bg-[#88B7A5] hover:bg-[#72A190] text-white px-8 py-4 rounded-full font-bold shadow-md transform hover:-translate-y-0.5 transition-all text-sm flex items-center justify-center gap-2"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Pagar com Mercado Pago</span>
+              </button>
+            ) : simulatedCheckoutEnabled ? (
               <button
                 type="button"
                 onClick={() => buyProduct(product)}

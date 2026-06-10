@@ -28,11 +28,11 @@ export default function HeroSection({ stats }: HeroSectionProps) {
 
         <div className="pt-4">
           <Link
-            href="/materiais"
+            href="/catalogo"
             className="bg-[#88B7A5] hover:bg-[#72A190] text-white px-8 py-4 rounded-full font-semibold shadow-lg shadow-[#88B7A5]/10 hover:shadow-[#88B7A5]/20 transform hover:-translate-y-0.5 transition-all text-sm inline-flex items-center gap-2"
           >
             <ShoppingBag className="w-4 h-4" />
-            <span>Explorar Materiais</span>
+            <span>Explorar Catálogo</span>
           </Link>
         </div>
 

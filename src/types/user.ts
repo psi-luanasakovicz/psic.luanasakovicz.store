@@ -6,6 +6,7 @@ export interface User {
   email: string;
   crp: string;
   role?: UserRole;
+  memberSince?: string;
   isLoggedIn: boolean;
   isAdmin: boolean;
 }

@@ -3,6 +3,11 @@
 import { useState } from 'react';
 import { Check, Search, ShieldCheck, UserCheck } from 'lucide-react';
 import {
+  dashboardInputClass,
+  DashboardPanel,
+  DashboardSectionHeader,
+} from '@/components/dashboard/DashboardUI';
+import {
   fetchApprovedProductIdsForUser,
   searchProfilesByEmail,
   type AdminProfileResult,
@@ -109,159 +114,159 @@ export default function AdminAccessGrant({ products, onGranted, showToast }: Adm
   const availableProducts = products.filter((product) => !ownedProductIds.includes(product.id));
 
   return (
-    <section className="bg-[#EEF5F2] border border-[#C8DDD4] rounded-[2rem] p-8 space-y-6 text-left">
-      <div className="space-y-1">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5 text-[#88B7A5]" />
-          <h3 className="font-serif-brand font-bold text-lg">Liberar Acesso Manual (sem compra)</h3>
+    <DashboardPanel className="overflow-hidden">
+      <DashboardSectionHeader
+        title="Liberar acesso manual"
+        subtitle="Conceda materiais sem compra — cortesia, brinde ou teste. O acesso aparece na Área do Cliente na hora."
+      />
+
+      <div className="p-6 sm:p-8 space-y-6">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <input
+            type="email"
+            value={emailQuery}
+            onChange={(event) => setEmailQuery(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault();
+                void handleSearch();
+              }
+            }}
+            placeholder="E-mail da conta (ex.: cliente@email.com)"
+            className={`${dashboardInputClass} py-3`}
+          />
+          <button
+            type="button"
+            onClick={() => void handleSearch()}
+            disabled={searching}
+            className="bg-[#88B7A5] hover:bg-[#72A190] disabled:opacity-60 text-white px-6 py-3 rounded-xl text-sm font-semibold inline-flex items-center justify-center gap-2 shrink-0"
+          >
+            <Search className="w-4 h-4" />
+            {searching ? 'Buscando...' : 'Buscar conta'}
+          </button>
         </div>
-        <p className="text-xs text-[#527A6B]/80">
-          Conceda acesso a um material <strong>sem o cliente precisar comprar</strong> — cortesia,
-          brinde, teste ou qualquer outro motivo. O material aparece na Área do Cliente na hora.
-        </p>
-      </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
-        <input
-          type="email"
-          value={emailQuery}
-          onChange={(event) => setEmailQuery(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              event.preventDefault();
-              void handleSearch();
-            }
-          }}
-          placeholder="E-mail da conta (ex.: cliente@email.com)"
-          className="flex-1 bg-[#F8FAF9] border border-[#C8DDD4] rounded-xl px-4 py-3 text-sm outline-none focus:border-[#88B7A5]"
-        />
-        <button
-          type="button"
-          onClick={() => void handleSearch()}
-          disabled={searching}
-          className="bg-[#88B7A5] hover:bg-[#72A190] disabled:opacity-60 text-white px-5 py-3 rounded-xl text-sm font-semibold inline-flex items-center justify-center gap-2"
-        >
-          <Search className="w-4 h-4" />
-          {searching ? 'Buscando...' : 'Buscar conta'}
-        </button>
-      </div>
-
-      {searchResults.length > 0 && (
-        <div className="space-y-2">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/70">
-            Resultados
-          </p>
-          {searchResults.map((profile) => (
-            <button
-              key={profile.id}
-              type="button"
-              onClick={() => void selectUser(profile)}
-              className="w-full text-left bg-[#F8FAF9] border border-[#C8DDD4]/60 hover:border-[#88B7A5] rounded-xl px-4 py-3 transition-colors"
-            >
-              <p className="font-semibold text-sm">{profile.name || 'Sem nome'}</p>
-              <p className="text-xs text-[#527A6B]/75">{profile.email}</p>
-              {profile.crp && (
-                <p className="text-[10px] text-[#527A6B]/60 mt-1">CRP {profile.crp}</p>
-              )}
-            </button>
-          ))}
-        </div>
-      )}
-
-      {selectedUser && (
-        <div className="space-y-4 border-t border-[#C8DDD4]/40 pt-6">
-          <div className="flex items-start gap-3 bg-[#F8FAF9] border border-[#C8DDD4]/60 rounded-xl p-4">
-            <div className="w-10 h-10 rounded-full bg-[#88B7A5]/15 flex items-center justify-center text-[#527A6B]">
-              <UserCheck className="w-5 h-5" />
-            </div>
-            <div>
-              <p className="font-semibold text-sm">{selectedUser.name || 'Sem nome'}</p>
-              <p className="text-xs text-[#527A6B]/75">{selectedUser.email}</p>
-              {selectedUser.crp && (
-                <p className="text-[10px] text-[#527A6B]/60 mt-1">CRP {selectedUser.crp}</p>
-              )}
-            </div>
-          </div>
-
-          {availableProducts.length > 0 ? (
-            <div className="space-y-3">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/70">
-                Materiais disponíveis para liberar
-              </p>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {availableProducts.map((product) => {
-                  const isSelected = selectedProductIds.includes(product.id);
-
-                  return (
-                    <label
-                      key={product.id}
-                      className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${
-                        isSelected
-                          ? 'bg-[#FBF0F3] border-[#E8A8B8]'
-                          : 'bg-[#F8FAF9] border-[#C8DDD4]/60 hover:border-[#88B7A5]/50'
-                      }`}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() => toggleProduct(product.id)}
-                        className="mt-1 accent-[#88B7A5]"
-                      />
-                      <span className="space-y-1">
-                        <span className="block font-semibold text-sm">{product.title}</span>
-                        <span className="block text-[10px] text-[#527A6B]/70">
-                          {product.category} • R$ {product.price.toFixed(2)}
-                        </span>
-                      </span>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
-            <p className="text-xs text-[#527A6B]/75">
-              Esta conta já possui acesso a todos os materiais cadastrados.
+        {searchResults.length > 0 && (
+          <div className="space-y-2">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/70">
+              Resultados
             </p>
-          )}
+            {searchResults.map((profile) => (
+              <button
+                key={profile.id}
+                type="button"
+                onClick={() => void selectUser(profile)}
+                className="w-full text-left bg-[#F8FAF9] border border-[#C8DDD4]/60 hover:border-[#88B7A5] rounded-xl px-4 py-3 transition-colors"
+              >
+                <p className="font-semibold text-sm text-[#527A6B]">{profile.name || 'Sem nome'}</p>
+                <p className="text-xs text-[#527A6B]/75">{profile.email}</p>
+                {profile.crp ? (
+                  <p className="text-[10px] text-[#527A6B]/60 mt-1">CRP {profile.crp}</p>
+                ) : null}
+              </button>
+            ))}
+          </div>
+        )}
 
-          {ownedProductIds.length > 0 && (
-            <div className="space-y-2">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/70">
-                Já liberados
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {products
-                  .filter((product) => ownedProductIds.includes(product.id))
-                  .map((product) => (
-                    <span
-                      key={product.id}
-                      className="inline-flex items-center gap-1 text-[10px] font-semibold bg-green-100 text-green-800 px-2.5 py-1 rounded-full"
-                    >
-                      <Check className="w-3 h-3" />
-                      {product.title}
-                    </span>
-                  ))}
+        {selectedUser && (
+          <div className="space-y-5 border-t border-[#C8DDD4]/40 pt-6">
+            <div className="flex items-start gap-3 bg-[#EEF5F2] border border-[#C8DDD4]/50 rounded-xl p-4">
+              <div className="w-11 h-11 rounded-xl bg-[#88B7A5]/15 flex items-center justify-center text-[#527A6B]">
+                <UserCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-semibold text-sm text-[#527A6B]">
+                  {selectedUser.name || 'Sem nome'}
+                </p>
+                <p className="text-xs text-[#527A6B]/75">{selectedUser.email}</p>
+                {selectedUser.crp ? (
+                  <p className="text-[10px] text-[#527A6B]/60 mt-1">CRP {selectedUser.crp}</p>
+                ) : null}
               </div>
             </div>
-          )}
 
-          {availableProducts.length > 0 && (
-            <button
-              type="button"
-              onClick={() => void handleGrant()}
-              disabled={granting || selectedProductIds.length === 0}
-              className="bg-[#88B7A5] hover:bg-[#72A190] disabled:opacity-60 text-white px-6 py-3 rounded-full text-sm font-bold inline-flex items-center gap-2"
-            >
-              <ShieldCheck className="w-4 h-4" />
-              {granting
-                ? 'Liberando...'
-                : selectedProductIds.length === 1
-                  ? 'Conceder acesso (sem compra)'
-                  : `Conceder acesso a ${selectedProductIds.length} materiais`}
-            </button>
-          )}
-        </div>
-      )}
-    </section>
+            {availableProducts.length > 0 ? (
+              <div className="space-y-3">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/70">
+                  Materiais disponíveis
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {availableProducts.map((product) => {
+                    const isSelected = selectedProductIds.includes(product.id);
+
+                    return (
+                      <label
+                        key={product.id}
+                        className={`flex items-start gap-3 p-4 rounded-xl border cursor-pointer transition-colors ${
+                          isSelected
+                            ? 'bg-[#FBF0F3] border-[#E8A8B8]'
+                            : 'bg-white border-[#C8DDD4]/60 hover:border-[#88B7A5]/50'
+                        }`}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => toggleProduct(product.id)}
+                          className="mt-1 accent-[#88B7A5]"
+                        />
+                        <span className="space-y-1">
+                          <span className="block font-semibold text-sm text-[#527A6B]">
+                            {product.title}
+                          </span>
+                          <span className="block text-xs text-[#527A6B]/70">
+                            {product.category} • R$ {product.price.toFixed(2)}
+                          </span>
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : (
+              <p className="text-sm text-[#527A6B]/75">
+                Esta conta já possui acesso a todos os materiais cadastrados.
+              </p>
+            )}
+
+            {ownedProductIds.length > 0 && (
+              <div className="space-y-2">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/70">
+                  Já liberados
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {products
+                    .filter((product) => ownedProductIds.includes(product.id))
+                    .map((product) => (
+                      <span
+                        key={product.id}
+                        className="inline-flex items-center gap-1 text-[10px] font-semibold bg-emerald-100 text-emerald-800 px-2.5 py-1 rounded-full"
+                      >
+                        <Check className="w-3 h-3" />
+                        {product.title}
+                      </span>
+                    ))}
+                </div>
+              </div>
+            )}
+
+            {availableProducts.length > 0 && (
+              <button
+                type="button"
+                onClick={() => void handleGrant()}
+                disabled={granting || selectedProductIds.length === 0}
+                className="bg-[#88B7A5] hover:bg-[#72A190] disabled:opacity-60 text-white px-6 py-3 rounded-full text-sm font-semibold inline-flex items-center gap-2 shadow-sm"
+              >
+                <ShieldCheck className="w-4 h-4" />
+                {granting
+                  ? 'Liberando...'
+                  : selectedProductIds.length === 1
+                    ? 'Conceder acesso (sem compra)'
+                    : `Conceder acesso a ${selectedProductIds.length} materiais`}
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </DashboardPanel>
   );
 }

@@ -29,7 +29,7 @@ export default function InteractiveAppPromo() {
 
         <div className="relative z-10 shrink-0">
           <Link
-            href={`/materiais/${app.slug}`}
+            href={`/catalogo/${app.slug}`}
             className="bg-[#88B7A5] hover:bg-[#72A190] text-white px-6 py-3.5 rounded-full font-semibold transition-all text-sm text-center inline-flex items-center justify-center gap-2"
           >
             <Layers className="w-4 h-4" />

@@ -100,7 +100,7 @@ export default async function HomePage() {
           </p>
           <div className="pt-4">
             <Link
-              href="/materiais"
+              href="/catalogo"
               className="bg-[#FBF0F3] text-[#527A6B] hover:bg-white font-bold px-8 py-4 rounded-full transition-all text-sm inline-flex items-center gap-2 shadow-lg"
             >
               <ShoppingBag className="w-4 h-4" />

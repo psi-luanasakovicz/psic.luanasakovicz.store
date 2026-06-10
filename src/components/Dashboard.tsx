@@ -1,7 +1,25 @@
 'use client';
 
 import Link from 'next/link';
-import { BookOpen, Layers, Plus, ShieldCheck } from 'lucide-react';
+import {
+  BookOpen,
+  ChevronRight,
+  Layers,
+  Package,
+  Receipt,
+  ShieldCheck,
+  ShoppingBag,
+  User,
+} from 'lucide-react';
+import {
+  DashboardEmptyState,
+  DashboardHero,
+  DashboardPanel,
+  DashboardSectionHeader,
+  DashboardShell,
+  DashboardStatCard,
+  DashboardSecondaryLink,
+} from '@/components/dashboard/DashboardUI';
 import { useApp } from '@/context/AppContext';
 import { getInteractiveApp, getInteractiveAppLibraryPath } from '@/lib/interactive-apps';
 
@@ -10,173 +28,231 @@ export default function Dashboard() {
   const primaryLicense = licenses[0];
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto space-y-8">
-      <div className="bg-[#EEF5F2] rounded-[2rem] border border-[#C8DDD4] p-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
-        <div className="space-y-2 text-left">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
-            <span className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/80">
-              Ambiente do Psicólogo
-            </span>
+    <DashboardShell>
+      <DashboardHero
+        badge="Minha Área"
+        title={`Olá, ${user.name || 'profissional'}.`}
+        description="Seu consultório digital reúne materiais licenciados, downloads protegidos e ferramentas interativas prontas para a prática clínica."
+        actions={
+          <>
+            <Link
+              href="/catalogo"
+              className="bg-[#88B7A5] hover:bg-[#72A190] text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-sm transition-all inline-flex items-center gap-2"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              Explorar catálogo
+            </Link>
+            <DashboardSecondaryLink href="/perfil">
+              <User className="w-4 h-4" />
+              Meus dados
+            </DashboardSecondaryLink>
+          </>
+        }
+        aside={
+          <div className="bg-[#EEF5F2] border border-[#C8DDD4]/50 rounded-2xl px-5 py-4 min-w-[200px]">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/60 mb-1">
+              Conta ativa
+            </p>
+            <p className="text-sm font-semibold text-[#527A6B] truncate">{user.email}</p>
+            {user.crp ? (
+              <p className="text-xs text-[#527A6B]/70 mt-1">{user.crp}</p>
+            ) : null}
           </div>
-          <h1 className="font-serif-brand text-2xl sm:text-3xl font-bold">Olá, {user.name}!</h1>
-          <p className="text-xs text-[#527A6B]/80">
-            Bem-vindo ao seu consultório digital. Aqui estão organizados os materiais adquiridos
-            para a sua prática diária.
-          </p>
-        </div>
+        }
+      />
 
-        <div className="flex gap-3">
-          <Link
-            href="/materiais"
-            className="bg-[#88B7A5] hover:bg-[#72A190] text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-sm transition-all flex items-center gap-1"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Novo Material</span>
-          </Link>
-          <Link
-            href="/perfil"
-            className="border border-[#C8DDD4] hover:bg-[#C8DDD4]/40 text-xs font-semibold px-4 py-2.5 rounded-full transition-all"
-          >
-            Meus Dados
-          </Link>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <DashboardStatCard
+          icon={Package}
+          label="Materiais ativos"
+          value={String(purchasedProducts.length)}
+          hint={
+            purchasedProducts.length === 1
+              ? '1 recurso disponível'
+              : `${purchasedProducts.length} recursos disponíveis`
+          }
+          accent="green"
+        />
+        <DashboardStatCard
+          icon={Receipt}
+          label="Aquisições"
+          value={String(purchases.length)}
+          hint={purchases.length > 0 ? 'Histórico na barra lateral' : 'Nenhuma compra ainda'}
+          accent="neutral"
+        />
+        <DashboardStatCard
+          icon={ShieldCheck}
+          label="Licença clínica"
+          value={primaryLicense ? 'Ativa' : '—'}
+          hint={primaryLicense?.licenseCode ? primaryLicense.licenseCode : 'Gerada ao adquirir'}
+          accent="rose"
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <div className="lg:col-span-8 space-y-6">
-          <div className="flex items-center justify-between border-b border-[#C8DDD4]/40 pb-2">
-            <h3 className="font-serif-brand text-xl font-bold">Seus Recursos Ativos</h3>
-            <span className="text-xs text-[#527A6B]/70 font-semibold">
-              {purchasedProducts.length} Materiais
-            </span>
-          </div>
+        <DashboardPanel className="lg:col-span-8 overflow-hidden">
+          <DashboardSectionHeader
+            title="Biblioteca de materiais"
+            subtitle="Acesse conteúdos, downloads e apps interativos licenciados para sua conta."
+            action={
+              <span className="text-xs font-semibold text-[#527A6B]/70 bg-[#EEF5F2] px-3 py-1.5 rounded-full">
+                {purchasedProducts.length}{' '}
+                {purchasedProducts.length === 1 ? 'item' : 'itens'}
+              </span>
+            }
+          />
 
           {purchasedProducts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {purchasedProducts.map((p) => {
-                const interactiveApp = getInteractiveApp(p.slug);
+            <div className="p-6 sm:p-8 grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {purchasedProducts.map((product) => {
+                const interactiveApp = getInteractiveApp(product.slug);
 
                 return (
-                <div
-                  key={p.id}
-                  className="bg-[#EEF5F2] border border-[#C8DDD4] rounded-2xl overflow-hidden hover:shadow-md transition-all flex flex-col justify-between"
-                >
-                  <div className="p-6 space-y-4 text-left">
-                    <div className="flex justify-between items-start">
-                      <span className="bg-[#F8FAF9] text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full text-[#527A6B]">
-                        {p.category}
+                  <article
+                    key={product.id}
+                    className="group bg-[#F8FAF9] border border-[#C8DDD4]/50 rounded-2xl overflow-hidden hover:border-[#88B7A5]/40 hover:shadow-md transition-all flex flex-col"
+                  >
+                    <div className="relative h-36 overflow-hidden bg-[#EEF5F2]">
+                      {product.coverImageUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={product.coverImageUrl}
+                          alt=""
+                          className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                        />
+                      ) : (
+                        <div
+                          className={`w-full h-full bg-gradient-to-br ${product.imageColor} flex items-center justify-center`}
+                        >
+                          <BookOpen className="w-10 h-10 text-[#527A6B]/40" />
+                        </div>
+                      )}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#527A6B]/50 to-transparent" />
+                      <span className="absolute top-3 left-3 text-[9px] font-bold uppercase tracking-wider bg-white/90 text-[#527A6B] px-2.5 py-1 rounded-full">
+                        {product.category}
                       </span>
-                      <span className="text-[10px] text-green-700 font-bold bg-green-100 px-2 py-0.5 rounded-full">
+                      <span className="absolute top-3 right-3 text-[9px] font-bold bg-emerald-500/90 text-white px-2 py-0.5 rounded-full">
                         Ativo
                       </span>
                     </div>
 
-                    <div className="space-y-1">
-                      <h4 className="font-serif-brand font-bold text-base leading-snug">
-                        {p.title}
-                      </h4>
-                      <p className="text-[11px] text-[#527A6B]/75 line-clamp-2">{p.subtitle}</p>
-                    </div>
-                  </div>
+                    <div className="p-5 flex flex-col flex-1 gap-4">
+                      <div className="space-y-1.5">
+                        <h3 className="font-serif-brand font-bold text-base text-[#527A6B] leading-snug line-clamp-2">
+                          {product.title}
+                        </h3>
+                        <p className="text-xs text-[#527A6B]/70 line-clamp-2">{product.subtitle}</p>
+                      </div>
 
-                  <div className="p-4 bg-[#F8FAF9]/50 border-t border-[#C8DDD4]/50 flex gap-2">
-                    {interactiveApp ? (
-                      <>
+                      <div className="mt-auto flex flex-col gap-2">
                         <Link
-                          href={getInteractiveAppLibraryPath(p.slug)}
-                          className="flex-1 bg-[#E8A8B8] hover:bg-[#D892A5] text-white text-[11px] font-bold py-2 rounded-lg text-center transition-all flex items-center justify-center gap-1.5"
-                        >
-                          <Layers className="w-3.5 h-3.5" />
-                          <span>Baralho App</span>
-                        </Link>
-                        <Link
-                          href={`/biblioteca/${p.slug}`}
-                          className="flex-1 bg-[#88B7A5] hover:bg-[#72A190] text-white text-[11px] font-bold py-2 rounded-lg text-center transition-all flex items-center justify-center gap-1.5"
+                          href={`/biblioteca/${product.slug}`}
+                          className="w-full bg-[#88B7A5] hover:bg-[#72A190] text-white text-xs font-semibold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2"
                         >
                           <BookOpen className="w-3.5 h-3.5" />
-                          <span>Material</span>
+                          Abrir material
+                          <ChevronRight className="w-3.5 h-3.5 ml-auto opacity-70" />
                         </Link>
-                      </>
-                    ) : (
-                      <Link
-                        href={`/biblioteca/${p.slug}`}
-                        className="flex-1 bg-[#88B7A5] hover:bg-[#72A190] text-white text-[11px] font-bold py-2 rounded-lg text-center transition-all flex items-center justify-center gap-1.5"
-                      >
-                        <BookOpen className="w-3.5 h-3.5" />
-                        <span>Abrir e Baixar</span>
-                      </Link>
-                    )}
-                  </div>
-                </div>
-              );
+                        {interactiveApp ? (
+                          <Link
+                            href={getInteractiveAppLibraryPath(product.slug)}
+                            className="w-full bg-white border border-[#E8A8B8]/60 hover:bg-[#FBF0F3] text-[#527A6B] text-xs font-semibold py-2.5 px-4 rounded-xl transition-all flex items-center justify-center gap-2"
+                          >
+                            <Layers className="w-3.5 h-3.5 text-[#E8A8B8]" />
+                            {interactiveApp.title}
+                          </Link>
+                        ) : null}
+                      </div>
+                    </div>
+                  </article>
+                );
               })}
             </div>
           ) : (
-            <div className="text-center py-12 bg-[#EEF5F2] rounded-2xl border border-[#C8DDD4] space-y-4">
-              <BookOpen className="w-8 h-8 text-[#527A6B]/60 mx-auto" />
-              <p className="font-serif-brand text-lg font-bold">Nenhum recurso adquirido</p>
-              <p className="text-xs text-[#527A6B]/70 max-w-xs mx-auto">
-                Explore nosso catálogo boutique e adquira materiais para iniciar o preenchimento.
-              </p>
-              <Link
-                href="/materiais"
-                className="inline-block bg-[#88B7A5] text-white px-5 py-2.5 rounded-full text-xs font-semibold"
-              >
-                Ver Catálogo
-              </Link>
-            </div>
+            <DashboardEmptyState
+              icon={BookOpen}
+              title="Nenhum material na sua biblioteca"
+              description="Explore o catálogo e adquira recursos clínicos para começar a usar sua área exclusiva."
+              action={
+                <Link
+                  href="/catalogo"
+                  className="inline-flex items-center gap-2 bg-[#88B7A5] hover:bg-[#72A190] text-white px-6 py-3 rounded-full text-sm font-semibold transition-all"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  Ver catálogo
+                </Link>
+              }
+            />
           )}
-        </div>
+        </DashboardPanel>
 
         <div className="lg:col-span-4 space-y-6">
-          <div className="bg-[#EEF5F2] rounded-2xl border border-[#C8DDD4] p-6 space-y-4 text-left">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-[#527A6B]" />
-              <h3 className="font-serif-brand font-bold text-sm">Sua Licença de Uso</h3>
+          <DashboardPanel className="p-6 sm:p-7 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-xl bg-[#88B7A5]/10 flex items-center justify-center text-[#527A6B]">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="font-serif-brand font-bold text-base text-[#527A6B]">
+                  Licença de uso
+                </h3>
+                <p className="text-[10px] uppercase tracking-wider text-[#527A6B]/60">
+                  Uso clínico individual
+                </p>
+              </div>
             </div>
-            <p className="text-xs text-[#527A6B]/80 leading-relaxed">
-              Sua conta está registrada com a licença de uso individual clínica para{' '}
-              <strong>{user.name}</strong> ({user.crp}). Os materiais podem ser expostos aos seus
-              pacientes em atendimentos, adaptados para impressão física e preenchimento local.
+            <p className="text-sm text-[#527A6B]/80 leading-relaxed">
+              Os materiais podem ser utilizados em atendimentos, impressos ou adaptados conforme sua
+              prática, em nome de <strong>{user.name}</strong>.
             </p>
-            {primaryLicense?.licenseCode && (
-              <div className="text-[10px] text-[#527A6B]/60 pt-2 border-t border-[#C8DDD4]/40">
-                ID de Registro:{' '}
-                <span className="font-mono">{primaryLicense.licenseCode}</span>
+            {primaryLicense?.licenseCode ? (
+              <div className="bg-[#EEF5F2] rounded-xl px-4 py-3 border border-[#C8DDD4]/40">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#527A6B]/55 mb-1">
+                  Código de registro
+                </p>
+                <p className="font-mono text-xs text-[#527A6B] break-all">
+                  {primaryLicense.licenseCode}
+                </p>
               </div>
-            )}
-          </div>
+            ) : null}
+          </DashboardPanel>
 
-          <div className="bg-[#EEF5F2] rounded-2xl border border-[#C8DDD4] p-6 space-y-4 text-left">
-            <h3 className="font-serif-brand font-bold text-sm">Histórico de Faturas</h3>
-
-            {purchases.length > 0 ? (
-              <div className="space-y-3">
-                {purchases.map((purchase, index) => (
-                  <div
-                    key={purchase.id}
-                    className={`flex justify-between items-center text-xs p-2.5 bg-[#F8FAF9] rounded-xl ${index > 0 ? 'opacity-75' : ''}`}
-                  >
-                    <div>
-                      <p className="font-semibold">{purchase.productTitle}</p>
-                      <p className="text-[10px] text-[#527A6B]/60">{purchase.date}</p>
+          <DashboardPanel className="overflow-hidden">
+            <DashboardSectionHeader title="Histórico" subtitle="Suas aquisições registradas" />
+            <div className="p-6 sm:p-7">
+              {purchases.length > 0 ? (
+                <div className="space-y-3">
+                  {purchases.map((purchase) => (
+                    <div
+                      key={purchase.id}
+                      className="flex justify-between items-start gap-3 p-4 bg-[#F8FAF9] rounded-xl border border-[#C8DDD4]/40"
+                    >
+                      <div className="min-w-0">
+                        <p className="font-semibold text-sm text-[#527A6B] truncate">
+                          {purchase.productTitle}
+                        </p>
+                        <p className="text-xs text-[#527A6B]/60 mt-0.5">{purchase.date}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="font-bold text-sm text-[#527A6B]">
+                          R$ {purchase.amount.toFixed(2)}
+                        </p>
+                        <span className="inline-block mt-1 text-[9px] font-bold uppercase tracking-wide bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
+                          {purchase.status}
+                        </span>
+                      </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-bold">R$ {purchase.amount.toFixed(2)}</p>
-                      <span className="text-[9px] bg-green-100 text-green-700 font-bold px-1.5 py-0.5 rounded">
-                        {purchase.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p className="text-xs text-[#527A6B]/70">Nenhuma compra registrada ainda.</p>
-            )}
-          </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-[#527A6B]/70 text-center py-4">
+                  Nenhuma aquisição registrada ainda.
+                </p>
+              )}
+            </div>
+          </DashboardPanel>
         </div>
       </div>
-    </div>
+    </DashboardShell>
   );
 }

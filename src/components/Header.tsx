@@ -37,10 +37,10 @@ export default function Header() {
             Início
           </Link>
           <Link
-            href="/materiais"
-            className={`hover:text-[#72A190] transition-colors ${isActive(pathname, '/materiais') ? 'border-b-2 border-[#E8A8B8] pb-1' : ''}`}
+            href="/catalogo"
+            className={`hover:text-[#72A190] transition-colors ${isActive(pathname, '/catalogo') ? 'border-b-2 border-[#E8A8B8] pb-1' : ''}`}
           >
-            Materiais
+            Catálogo
           </Link>
           {user.isLoggedIn && (
             <Link

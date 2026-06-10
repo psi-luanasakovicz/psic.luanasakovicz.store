@@ -35,7 +35,7 @@ export default function HomeFeaturedProducts({ products }: HomeFeaturedProductsP
 
         <div className="text-center mt-12">
           <Link
-            href="/materiais"
+            href="/catalogo"
             className="border border-[#C8DDD4] hover:bg-[#EEF5F2] px-8 py-3.5 rounded-full font-semibold transition-all text-sm inline-flex items-center gap-2"
           >
             <span>Ver Catálogo Completo</span>
