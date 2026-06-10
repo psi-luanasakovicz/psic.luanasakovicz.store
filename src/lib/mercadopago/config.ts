@@ -2,6 +2,22 @@ export function getMercadoPagoAccessToken(): string | null {
   return process.env.MERCADOPAGO_ACCESS_TOKEN?.trim() || null;
 }
 
+export function isMercadoPagoTestMode(): boolean {
+  const token = getMercadoPagoAccessToken();
+  return Boolean(token?.startsWith('TEST-'));
+}
+
+export function getMercadoPagoCheckoutUrl(preference: {
+  init_point?: string;
+  sandbox_init_point?: string;
+}): string | null {
+  if (isMercadoPagoTestMode()) {
+    return preference.sandbox_init_point || preference.init_point || null;
+  }
+
+  return preference.init_point || preference.sandbox_init_point || null;
+}
+
 export function isMercadoPagoCheckoutEnabled(): boolean {
   const flag = process.env.NEXT_PUBLIC_ENABLE_MERCADOPAGO_CHECKOUT;
 

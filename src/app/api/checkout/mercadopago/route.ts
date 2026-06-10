@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { getSiteBaseUrl, isMercadoPagoCheckoutEnabled } from '@/lib/mercadopago/config';
+import { getSiteBaseUrl, getMercadoPagoCheckoutUrl, isMercadoPagoCheckoutEnabled } from '@/lib/mercadopago/config';
 import { getMercadoPagoPreferenceApi } from '@/lib/mercadopago/client';
 
 interface CheckoutBody {
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const checkoutUrl = preference.init_point || preference.sandbox_init_point;
+    const checkoutUrl = getMercadoPagoCheckoutUrl(preference);
 
     if (!checkoutUrl) {
       return NextResponse.json({ error: 'Mercado Pago não retornou URL de checkout.' }, { status: 502 });
