@@ -6,9 +6,16 @@ export function isMercadoPagoCheckoutEnabled(): boolean {
   const flag = process.env.NEXT_PUBLIC_ENABLE_MERCADOPAGO_CHECKOUT;
 
   if (flag === 'false') return false;
-  if (flag === 'true') return Boolean(getMercadoPagoAccessToken());
 
-  return Boolean(getMercadoPagoAccessToken());
+  // Token só existe no servidor — no browser usamos a flag pública para exibir o botão.
+  if (typeof window !== 'undefined') {
+    return flag === 'true';
+  }
+
+  const hasToken = Boolean(getMercadoPagoAccessToken());
+  if (flag === 'true') return hasToken;
+
+  return hasToken;
 }
 
 export function getSiteBaseUrl(): string {
